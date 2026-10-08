@@ -3,15 +3,26 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Storefront checks](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml/badge.svg?branch=main)](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml)
 
-**A boutique ecommerce storefront with a complete, no-keys-required demo shopping journey.**
+**A boutique ecommerce storefront, from first browse to saved demo order.**
 
-FORMA is the sample brand inside **my-shop**, a portfolio project and reusable Next.js, React and TypeScript storefront template. Warm ivory, deep olive and an editorial layout give everyday clothing and lifestyle pieces room to breathe. Browse a shared catalog, choose variants, save a cart, place a simulated order and explore its delivery timeline.
+FORMA is the sample brand inside **my-shop**: a portfolio project and reusable **Next.js, React and TypeScript** template. Warm ivory, deep olive and an editorial layout frame a complete guest shopping journey—no API keys or database setup required.
 
-[中文说明](docs/README.zh-CN.md) · [Project showcase](docs/showcase.md) · [Architecture & extension guide](docs/architecture.md) · [Deployment](docs/deployment.md)
+[Run locally](#quick-start) · [Project case study](docs/showcase.md) · [v0.1.0 release](https://github.com/SakuraUltra/my-shop/releases/tag/v0.1.0) · [中文说明](docs/README.zh-CN.md)
 
 > This is a **demo storefront**. It does not accept payments, register accounts, send emails or ship products. Cart and order data live in the visitor's browser. Use the fictional address provided at checkout.
 
 ## Preview
+
+[![FORMA storefront preview: editorial home, collection, product details and saved demo order](docs/media/storefront-preview.gif)](https://github.com/SakuraUltra/my-shop/releases/tag/v0.1.0)
+
+[Watch the MP4 walkthrough](docs/media/storefront-walkthrough.mp4) · [Explore the design and engineering decisions](docs/showcase.md)
+
+The GIF and video are montages of captured screens from the working interface, not real-time screen recordings. Run the project locally to try the interactions.
+
+[Download the offline showcase kit](https://github.com/SakuraUltra/my-shop/releases/download/v0.1.0/forma-v0.1.0-showcase.zip): extract the ZIP and open `index.html` for a static presentation with images and video. Interactive shopping requires [running the project locally](#quick-start).
+
+<details>
+<summary>View desktop, mobile and order screenshots</summary>
 
 ![FORMA desktop storefront: warm ivory, olive accents and editorial product photography](docs/media/desktop-home.jpg)
 
@@ -19,20 +30,20 @@ FORMA is the sample brand inside **my-shop**, a portfolio project and reusable N
 | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | <img src="docs/media/mobile-home.jpg" alt="FORMA mobile storefront" width="260" /> | <img src="docs/media/demo-order.jpg" alt="A saved FORMA demo order with item and amount details" width="640" /> |
 
-[Watch the short storefront walkthrough](docs/media/storefront-walkthrough.mp4) · [Read the project story and demo script](docs/showcase.md)
-
-The walkthrough is assembled from captured screens of the working interface; it is not a real-time screen recording.
+</details>
 
 ## Quick start
 
 Use Node.js **22.22+** (Node 22 LTS recommended).
 
 ```bash
-git clone https://github.com/SakuraUltra/my-shop.git
+git clone --branch v0.1.0 https://github.com/SakuraUltra/my-shop.git
 cd my-shop
 npm ci
 npm run dev
 ```
+
+This checks out the **v0.1.0** release. Omit `--branch v0.1.0` to work with the latest `main` branch.
 
 Open [localhost:3000](http://localhost:3000). No `.env`, database, seed command, payment key or account is required. Internet access is needed for dependency installation, Google fonts at build time and remote product photographs.
 
@@ -103,11 +114,9 @@ This is a frontend commerce demo, not a production transaction system. Browser s
 
 `prisma/schema.prisma` preserves the original relational design **as a reference only**. Prisma, Stripe and authentication are not connected to the app. The unused SDK wrappers and outdated database seed were removed from the default installation; adding production commerce requires server-side ownership and validation. See the [extension guide](docs/architecture.md).
 
-## Deployment
+## Optional deployment
 
-Run `npm run build` and deploy to a host supporting Next.js. Set `NEXT_PUBLIC_SITE_URL` to the actual public address before the production build. Full instructions and post-deployment checks are in [docs/deployment.md](docs/deployment.md).
-
-The repository's previous Vercel address is not advertised as a working demo until a new deployment is verified.
+The project can be explored through this README, the release assets and a local installation. To host your own copy, run `npm run build` and deploy to a host supporting Next.js. Set `NEXT_PUBLIC_SITE_URL` to the actual public address before the production build. Full instructions and post-deployment checks are in [docs/deployment.md](docs/deployment.md).
 
 ## Images and licensing
 
