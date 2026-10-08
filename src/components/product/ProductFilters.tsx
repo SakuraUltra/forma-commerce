@@ -1,38 +1,47 @@
 "use client";
 
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import {
-    Sheet,
-    SheetContent,
-    SheetTitle,
-    SheetTrigger,
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
 
-const categories = ["All", "Clothing", "Accessories", "Watches"];
+import { products } from "@/lib/catalog";
+import { priceRanges, type Filters } from "@/lib/product-filters";
+export type { Filters } from "@/lib/product-filters";
 
+const categories = ["All", ...new Set(products.map((p) => p.category))];
 const colorOptions = [
   { label: "All", value: "All", hex: "" },
-  { label: "Black", value: "Black", hex: "#000000" },
-  { label: "White", value: "White", hex: "#ffffff" },
-  { label: "Brown", value: "Brown", hex: "#8B4513" },
-  { label: "Silver", value: "Silver", hex: "#c0c0c0" },
-  { label: "Gold", value: "Gold", hex: "#FFD700" },
+  ...Array.from(
+    new Map(
+      products.flatMap((p) =>
+        p.colors.map(
+          (color, i) =>
+            [
+              color,
+              { label: color, value: color, hex: p.colorHexes[i] },
+            ] as const,
+        ),
+      ),
+    ).values(),
+  ),
 ];
-
-const priceRanges = ["All", "Under $30", "$30-$60", "$60-$100", "Over $100"];
 
 const sortOptions = [
   { label: "Featured", value: "featured" },
@@ -40,13 +49,6 @@ const sortOptions = [
   { label: "Price: High to Low", value: "price-desc" },
   { label: "Newest", value: "newest" },
 ];
-
-export type Filters = {
-  category: string;
-  color: string;
-  price: string;
-  sort: string;
-};
 
 interface Props {
   filters: Filters;
@@ -58,12 +60,17 @@ export default function ProductFilters({ filters, onChange }: Props) {
     onChange({ ...filters, [key]: value });
 
   const activeFilters: { key: keyof Filters; label: string }[] = [];
-  if (filters.category !== "All") activeFilters.push({ key: "category", label: filters.category });
-  if (filters.color !== "All") activeFilters.push({ key: "color", label: filters.color });
-  if (filters.price !== "All") activeFilters.push({ key: "price", label: filters.price });
+  if (filters.category !== "All")
+    activeFilters.push({ key: "category", label: filters.category });
+  if (filters.color !== "All")
+    activeFilters.push({ key: "color", label: filters.color });
+  if (filters.price !== "All")
+    activeFilters.push({ key: "price", label: filters.price });
 
-  const clearFilter = (key: keyof Filters) => onChange({ ...filters, [key]: "All" });
-  const clearAll = () => onChange({ ...filters, category: "All", color: "All", price: "All" });
+  const clearFilter = (key: keyof Filters) =>
+    onChange({ ...filters, [key]: "All" });
+  const clearAll = () =>
+    onChange({ ...filters, category: "All", color: "All", price: "All" });
 
   return (
     <>
@@ -81,7 +88,7 @@ export default function ProductFilters({ filters, onChange }: Props) {
           />
           {/* Color */}
           <DropdownMenu>
-          <DropdownMenuTrigger className="flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-800">
+            <DropdownMenuTrigger className="flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-800">
               Color
               <ChevronDown className="h-3.5 w-3.5 text-neutral-400" />
             </DropdownMenuTrigger>
@@ -136,7 +143,9 @@ export default function ProductFilters({ filters, onChange }: Props) {
                         key={c.value}
                         onClick={() => set("color", c.value)}
                         className={`flex w-full cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-sm ${
-                          filters.color === c.value ? "bg-neutral-100 font-medium dark:bg-neutral-800" : ""
+                          filters.color === c.value
+                            ? "bg-neutral-100 font-medium dark:bg-neutral-800"
+                            : ""
                         }`}
                       >
                         {c.hex && (
@@ -163,10 +172,20 @@ export default function ProductFilters({ filters, onChange }: Props) {
 
         {/* Right — Sort */}
         <div className="flex items-center gap-2">
-          <span className="hidden text-sm text-neutral-500 dark:text-neutral-400 sm:inline">Sort by</span>
-          <Select value={filters.sort} onValueChange={(v) => v && set("sort", v)}>
-            <SelectTrigger className="h-9 w-[180px]">
-              <SelectValue />
+          <span className="hidden text-sm text-neutral-500 dark:text-neutral-400 sm:inline">
+            Sort by
+          </span>
+          <Select
+            value={filters.sort}
+            onValueChange={(v) => v && set("sort", v)}
+          >
+            <SelectTrigger aria-label="Sort products" className="h-9 w-[180px]">
+              <SelectValue>
+                {
+                  sortOptions.find((option) => option.value === filters.sort)
+                    ?.label
+                }
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {sortOptions.map((o) => (
@@ -188,12 +207,19 @@ export default function ProductFilters({ filters, onChange }: Props) {
               className="flex items-center gap-1 rounded-full bg-neutral-100 px-3 py-1 text-xs dark:bg-neutral-800"
             >
               {f.label}
-              <button onClick={() => clearFilter(f.key)} className="cursor-pointer text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200">
+              <button
+                aria-label={`Remove ${f.label} filter`}
+                onClick={() => clearFilter(f.key)}
+                className="cursor-pointer text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
+              >
                 <X className="h-3 w-3" />
               </button>
             </span>
           ))}
-          <button onClick={clearAll} className="cursor-pointer text-xs text-neutral-500 underline underline-offset-2 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white">
+          <button
+            onClick={clearAll}
+            className="cursor-pointer text-xs text-neutral-500 underline underline-offset-2 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white"
+          >
             Clear all
           </button>
         </div>
@@ -256,7 +282,9 @@ function MobileFilterSection({
             key={opt}
             onClick={() => onSelect(opt)}
             className={`w-full cursor-pointer rounded px-2 py-1.5 text-left text-sm ${
-              value === opt ? "bg-neutral-100 font-medium dark:bg-neutral-800" : ""
+              value === opt
+                ? "bg-neutral-100 font-medium dark:bg-neutral-800"
+                : ""
             }`}
           >
             {opt}

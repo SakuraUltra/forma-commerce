@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { storeConfig } from "@/lib/store-config";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -18,45 +19,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(storeConfig.siteUrl),
   title: {
-    default: "Your Brand — Minimal Fashion & Accessories",
-    template: "%s | Your Brand",
+    default: `${storeConfig.name} — Demo Storefront`,
+    template: `%s | ${storeConfig.name}`,
   },
-  description:
-    "Discover curated fashion and accessories. Free shipping on orders over $49.",
-  keywords: [
-    "fashion",
-    "accessories",
-    "minimal",
-    "clothing",
-    "watches",
-    "bags",
-  ],
+  description: storeConfig.description,
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://my-shop-seven-iota.vercel.app",
-    siteName: "Your Brand",
-    title: "Your Brand — Minimal Fashion & Accessories",
-    description:
-      "Discover curated fashion and accessories. Free shipping on orders over $49.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Your Brand",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Your Brand — Minimal Fashion & Accessories",
-    description: "Discover curated fashion and accessories.",
-  },
-  robots: {
-    index: true,
-    follow: true,
+    siteName: storeConfig.name,
+    title: `${storeConfig.name} — Demo Storefront`,
+    description: storeConfig.description,
   },
 };
 
@@ -73,9 +46,17 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:p-4"
+          >
+            Skip to content
+          </a>
           <AnnouncementBar />
           <Navbar />
-          {children}
+          <div id="main-content" className="flex-1">
+            {children}
+          </div>
           <Footer />
           <Toaster position="bottom-right" richColors />
         </ThemeProvider>

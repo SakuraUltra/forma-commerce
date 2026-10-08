@@ -1,42 +1,23 @@
 import ProductDetail from "@/components/product/ProductDetail";
-import { prisma } from "@/lib/prisma";
-import type { Metadata } from "next";
+import { products } from "@/lib/catalog";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+type Props = { params: Promise<{ slug: string }> };
+export function generateStaticParams() {
+  return products.map(({ slug }) => ({ slug }));
+}
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    select: { name: true, description: true },
-  });
-
-  if (!product) return {};
-
+  const product = products.find((p) => p.slug === slug);
   return {
-    title: product.name,
-    description: product.description
-      ? product.description.slice(0, 160)
-      : `Shop ${product.name} at Your Brand.`,
+    title: product?.name ?? "Product not found",
+    description: product?.description,
   };
 }
-
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: { variants: true },
-  });
-
+  const product = products.find((p) => p.slug === slug);
   if (!product) notFound();
-
-  return <ProductDetail product={product} />;
+  return <ProductDetail key={product.slug} product={product} />;
 }

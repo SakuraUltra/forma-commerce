@@ -1,17 +1,20 @@
 "use client";
 
 import {
-    Sheet,
-    SheetContent,
-    SheetTitle,
-    SheetTrigger,
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { useCartStore } from "@/store/cart";
 import { motion } from "framer-motion";
 import { Minus, Plus, ShoppingBag, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useClientReady } from "@/lib/use-client-ready";
+import { findVariant } from "@/lib/catalog";
+import { formatMoney } from "@/lib/store-config";
 import { toast } from "sonner";
 
 export default function CartSheet() {
@@ -22,13 +25,22 @@ export default function CartSheet() {
   const totalPrice = useCartStore((s) => s.totalPrice);
 
   // Prevent hydration mismatch — zustand persist rehydrates after mount
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useClientReady();
+  const [open, setOpen] = useState(false);
+  const changeQuantity = (id: string, quantity: number) => {
+    try {
+      updateQuantity(id, quantity);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Could not update cart",
+      );
+    }
+  };
 
   const count = mounted ? totalItems() : 0;
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
         className="relative cursor-pointer text-gray-700 transition-colors hover:text-gray-500 dark:text-neutral-300 dark:hover:text-white"
         aria-label="Cart"
@@ -52,9 +64,12 @@ export default function CartSheet() {
         {/* Cart items */}
         {mounted && items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-4">
-            <p className="text-neutral-500 dark:text-neutral-400">Your cart is empty</p>
+            <p className="text-neutral-500 dark:text-neutral-400">
+              Your cart is empty
+            </p>
             <Link
               href="/products"
+              onClick={() => setOpen(false)}
               className="text-sm font-medium text-black underline underline-offset-4 hover:text-neutral-600 dark:text-white dark:hover:text-neutral-300"
             >
               Continue shopping
@@ -84,13 +99,18 @@ export default function CartSheet() {
                     <div className="flex flex-1 flex-col justify-between">
                       <div className="flex items-start justify-between">
                         <div>
-                          <p className="text-sm font-medium">{item.productName}</p>
+                          <p className="text-sm font-medium">
+                            {item.productName}
+                          </p>
                           <p className="text-xs text-neutral-500 dark:text-neutral-400">
                             {item.color} / {item.size}
                           </p>
                         </div>
                         <button
-                          onClick={() => { removeItem(item.variantId); toast("Item removed"); }}
+                          onClick={() => {
+                            removeItem(item.variantId);
+                            toast("Item removed");
+                          }}
                           className="cursor-pointer text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
                           aria-label="Remove item"
                         >
@@ -100,15 +120,17 @@ export default function CartSheet() {
 
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-semibold">
-                          ${(item.price / 100).toFixed(2)}
+                          {formatMoney(item.price)}
                         </span>
 
                         {/* Quantity */}
                         <div className="flex items-center rounded border dark:border-neutral-700">
                           <button
-                            onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
+                            onClick={() =>
+                              changeQuantity(item.variantId, item.quantity - 1)
+                            }
                             className="cursor-pointer px-2 py-1 text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white"
-                            aria-label="Decrease"
+                            aria-label={`Decrease ${item.productName}`}
                           >
                             <Minus className="h-3 w-3" />
                           </button>
@@ -116,9 +138,15 @@ export default function CartSheet() {
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
+                            onClick={() =>
+                              changeQuantity(item.variantId, item.quantity + 1)
+                            }
                             className="cursor-pointer px-2 py-1 text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white"
-                            aria-label="Increase"
+                            disabled={
+                              item.quantity >=
+                              (findVariant(item.variantId)?.variant.stock ?? 0)
+                            }
+                            aria-label={`Increase ${item.productName}`}
                           >
                             <Plus className="h-3 w-3" />
                           </button>
@@ -133,13 +161,16 @@ export default function CartSheet() {
             {/* Footer */}
             <div className="border-t pt-4 dark:border-neutral-800">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-neutral-600 dark:text-neutral-400">Subtotal</span>
+                <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                  Subtotal
+                </span>
                 <span className="text-lg font-semibold">
-                  ${(totalPrice() / 100).toFixed(2)}
+                  {formatMoney(totalPrice())}
                 </span>
               </div>
               <Link
                 href="/checkout"
+                onClick={() => setOpen(false)}
                 className="mt-4 block w-full rounded-lg bg-black py-3 text-center text-sm font-medium text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
               >
                 Checkout

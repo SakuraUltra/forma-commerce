@@ -1,107 +1,42 @@
 import Link from "next/link";
-
-const footerLinks = {
-  shop: [
-    { label: "All products", href: "/products" },
-    { label: "New arrivals", href: "/products?sort=newest" },
-    { label: "On sale", href: "/on-sale" },
-  ],
-  support: [
-    { label: "Track order", href: "/orders" },
-    { label: "Returns", href: "#" },
-    { label: "Contact us", href: "#" },
-  ],
-  social: [
-    { label: "Instagram", href: "#" },
-    { label: "TikTok", href: "#" },
-    { label: "Twitter", href: "#" },
-  ],
-};
-
+import { storeConfig } from "@/lib/store-config";
 export default function Footer() {
   return (
-    <footer className="border-t bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-950">
-      <div className="mx-auto max-w-7xl px-4 py-12">
-        {/* Top grid */}
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-          {/* Brand */}
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide">
-              My Shop
-            </h4>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              Timeless essentials crafted with premium materials and minimal
-              design.
-            </p>
-          </div>
-
-          {/* Shop */}
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide">
-              Shop
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.shop.map((link) => (
-                <li key={link.href + link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-neutral-500 transition-colors hover:text-black dark:text-neutral-400 dark:hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide">
-              Support
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.support.map((link) => (
-                <li key={link.href + link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-neutral-500 transition-colors hover:text-black dark:text-neutral-400 dark:hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Follow us */}
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide">
-              Follow us
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.social.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-neutral-500 transition-colors hover:text-black dark:text-neutral-400 dark:hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+    <footer className="mt-16 border-t">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:grid-cols-3">
+        <div>
+          <Link href="/" className="text-lg font-bold">
+            {storeConfig.name}
+          </Link>
+          <p className="mt-3 max-w-xs text-sm leading-6 text-muted-foreground">
+            Everyday essentials. A thoughtfully simple shopping demo.
+          </p>
+        </div>
+        <div>
+          <h2 className="mb-4 text-sm font-semibold">Explore</h2>
+          <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+            <Link href="/products">All products</Link>
+            <Link href="/products?sort=newest">New arrivals</Link>
+            <Link href="/on-sale">On sale</Link>
           </div>
         </div>
-
-        {/* Bottom bar */}
-        <div className="mt-8 flex items-center justify-between border-t pt-6 dark:border-neutral-800">
-          <span className="text-xs text-neutral-400">
-            © 2026 Your Brand
-          </span>
-          <span className="text-xs text-neutral-400">
-            Privacy · Terms
-          </span>
+        <div>
+          <h2 className="mb-4 text-sm font-semibold">The project</h2>
+          <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+            <Link href="/orders">Your demo orders</Link>
+            <Link href="/about">About & privacy</Link>
+            <a
+              href={storeConfig.repositoryUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Source on GitHub ↗
+            </a>
+          </div>
         </div>
+      </div>
+      <div className="border-t px-4 py-5 text-center text-xs text-muted-foreground">
+        Demo storefront · No real payments · Product imagery from Unsplash
       </div>
     </footer>
   );

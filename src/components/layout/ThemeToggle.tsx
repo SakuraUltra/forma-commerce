@@ -2,13 +2,11 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useClientReady } from "@/lib/use-client-ready";
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const { resolvedTheme: theme, setTheme } = useTheme();
+  const mounted = useClientReady();
 
   if (!mounted) return <div className="h-5 w-5" />;
 
