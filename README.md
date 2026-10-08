@@ -1,14 +1,27 @@
-# My Shop
+# FORMA · Next.js Storefront
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Storefront checks](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml/badge.svg?branch=main)](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml)
 
-**A minimal Next.js storefront with a complete, no-keys-required demo shopping journey.**
+**A boutique ecommerce storefront with a complete, no-keys-required demo shopping journey.**
 
-Built as a portfolio project and a reusable storefront starter: browse a shared catalog, choose variants, save a cart, place a simulated order and explore its delivery timeline.
+FORMA is the sample brand inside **my-shop**, a portfolio project and reusable Next.js, React and TypeScript storefront template. Warm ivory, deep olive and an editorial layout give everyday clothing and lifestyle pieces room to breathe. Browse a shared catalog, choose variants, save a cart, place a simulated order and explore its delivery timeline.
 
-[中文说明](docs/README.zh-CN.md) · [Architecture & extension guide](docs/architecture.md) · [Deployment](docs/deployment.md)
+[中文说明](docs/README.zh-CN.md) · [Project showcase](docs/showcase.md) · [Architecture & extension guide](docs/architecture.md) · [Deployment](docs/deployment.md)
 
 > This is a **demo storefront**. It does not accept payments, register accounts, send emails or ship products. Cart and order data live in the visitor's browser. Use the fictional address provided at checkout.
+
+## Preview
+
+![FORMA desktop storefront: warm ivory, olive accents and editorial product photography](docs/media/desktop-home.jpg)
+
+| Mobile storefront                                                                  | Saved demo order                                                                                                |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| <img src="docs/media/mobile-home.jpg" alt="FORMA mobile storefront" width="260" /> | <img src="docs/media/demo-order.jpg" alt="A saved FORMA demo order with item and amount details" width="640" /> |
+
+[Watch the short storefront walkthrough](docs/media/storefront-walkthrough.mp4) · [Read the project story and demo script](docs/showcase.md)
+
+The walkthrough is assembled from captured screens of the working interface; it is not a real-time screen recording.
 
 ## Quick start
 
@@ -25,7 +38,7 @@ Open [localhost:3000](http://localhost:3000). No `.env`, database, seed command,
 
 ## Try the complete journey
 
-1. Open **Products**, filter by category/colour/price, or search with **⌘K / Ctrl+K**.
+1. Open **The collection**, filter by category/colour/price, or search with **⌘K / Ctrl+K**.
 2. Choose a product colour and size. Unavailable variants cannot be added.
 3. Open the cart, adjust quantities and continue to checkout.
 4. Keep the example shipping address and select **Place demo order**. There is no card form.
@@ -35,13 +48,14 @@ Open [localhost:3000](http://localhost:3000). No `.env`, database, seed command,
 ## Features
 
 - **One catalog, everywhere:** home, search, filtered listings, sale items, all 12 product pages and sitemap share one data source.
-- **Shareable discovery:** category, colour, price and sorting are reflected in the URL; “New arrivals” works on direct visits.
+- **Shareable discovery:** category, colour, price and sorting are reflected in the URL; direct links such as `/products?sort=newest` preserve the **Newest** sort order.
 - **Persistent cart:** variant quantities survive reloads; integer validation, unavailable-product handling and per-variant stock limits.
 - **Guest checkout:** catalog-based price recalculation, consistent shipping thresholds, empty-cart protection and useful storage-error feedback.
 - **Saved demo orders:** unique IDs, item and price snapshots, order history, missing-order states and interactive simulated delivery.
-- **Responsive interface:** mobile navigation and filters, image gallery, dark/light themes, labelled controls and a skip link.
+- **Boutique visual identity:** an editorial home page, warm neutral surfaces, olive accents and a responsive layout with dark/light themes.
+- **Accessible interactions:** labelled controls, keyboard search, a skip link, mobile navigation and filters.
 - **Configurable branding:** store name, description, currency, shipping and canonical URL in one file.
-- **Validation:** domain and component tests plus lint, TypeScript and production build checks, with a ready-to-enable CI workflow.
+- **Validation:** domain and component tests plus lint, TypeScript and production build checks; GitHub Actions configuration lives alongside the code.
 
 ## Make it your own
 
@@ -65,7 +79,7 @@ npm run build
 npm run start
 ```
 
-`npm run test` starts watch mode. `npm run typecheck` performs a separate type check (the production build also checks types). A ready-to-enable GitHub Actions workflow is provided in `docs/storefront-checks.yml`. To activate it, copy it to `.github/workflows/ci.yml` using a GitHub connection with workflow-write permission. It will then check pull requests and pushes to `main`.
+`npm run test` starts watch mode. `npm run typecheck` performs a separate type check (the production build also checks types). The [Storefront checks workflow](.github/workflows/storefront-checks.yml) installs locked dependencies, lints, tests and builds on pull requests and pushes to `main`. It can also be run manually from GitHub Actions. It uses a read-only repository token and does not deploy the site. Check the [Actions page](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml) for the status of a particular commit.
 
 Tests cover stock and quantity limits, duplicate and stale cart data, price recalculation, shipping boundaries, unique order IDs, persistence, malformed saved orders, failed storage, missing orders and the guest checkout UI.
 

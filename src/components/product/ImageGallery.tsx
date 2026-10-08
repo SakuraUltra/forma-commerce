@@ -48,7 +48,7 @@ export default function ImageGallery({
 
   if (images.length === 0) {
     return (
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800" />
+      <div className="relative aspect-square overflow-hidden rounded-xl bg-muted" />
     );
   }
 
@@ -56,17 +56,18 @@ export default function ImageGallery({
     <>
       {/* ── Mobile carousel ──────────────────────────────── */}
       <div className="md:hidden">
-        <div className="overflow-hidden rounded-lg" ref={emblaRef}>
+        <div className="overflow-hidden rounded-xl" ref={emblaRef}>
           <div className="flex">
             {images.map((img, idx) => (
               <div
                 key={idx}
-                className="relative aspect-square w-full flex-[0_0_100%] bg-neutral-100 dark:bg-neutral-800"
+                className="relative aspect-square w-full flex-[0_0_100%] bg-muted"
               >
                 <Image
                   src={img}
                   alt={`${name} ${idx + 1}`}
                   fill
+                  sizes="(max-width: 767px) calc(100vw - 40px), 50vw"
                   className="object-cover"
                   priority={idx === 0}
                 />
@@ -85,8 +86,8 @@ export default function ImageGallery({
                 onClick={() => scrollTo(idx)}
                 className={`h-2 w-2 rounded-full transition-colors ${
                   idx === selectedIndex
-                    ? "bg-black dark:bg-white"
-                    : "bg-neutral-300 dark:bg-neutral-600"
+                    ? "bg-primary"
+                    : "bg-muted-foreground/30"
                 }`}
               />
             ))}
@@ -98,12 +99,14 @@ export default function ImageGallery({
       <div className="hidden md:block">
         <button
           onClick={() => setLightboxOpen(true)}
-          className="relative aspect-square w-full cursor-zoom-in overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800"
+          aria-label={`Enlarge ${name} image`}
+          className="relative aspect-[4/5] w-full cursor-zoom-in overflow-hidden rounded-xl bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         >
           <Image
             src={images[selectedIndex]}
             alt={name}
             fill
+            sizes="(max-width: 1279px) 50vw, 584px"
             className="object-cover"
             priority
           />
@@ -116,9 +119,11 @@ export default function ImageGallery({
               <button
                 key={idx}
                 onClick={() => setSelectedIndex(idx)}
+                aria-label={`Show image ${idx + 1}`}
+                aria-pressed={selectedIndex === idx}
                 className={`relative h-16 w-16 flex-shrink-0 cursor-pointer overflow-hidden rounded transition-opacity hover:opacity-80 ${
                   idx === selectedIndex
-                    ? "ring-2 ring-black ring-offset-2 dark:ring-white dark:ring-offset-neutral-950"
+                    ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
                     : ""
                 }`}
               >
@@ -126,6 +131,7 @@ export default function ImageGallery({
                   src={img}
                   alt={`${name} ${idx + 1}`}
                   fill
+                  sizes="64px"
                   className="object-cover"
                 />
               </button>
@@ -136,7 +142,7 @@ export default function ImageGallery({
 
       {/* ── Fullscreen lightbox dialog ───────────────────── */}
       <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent className="flex max-w-5xl flex-col items-center gap-4 bg-white p-4 dark:bg-neutral-950 sm:p-6">
+        <DialogContent className="flex max-w-5xl flex-col items-center gap-4 bg-background p-4 sm:p-6">
           <DialogTitle className="sr-only">{name}</DialogTitle>
 
           <div className="relative aspect-square w-full max-h-[70vh]">
@@ -144,6 +150,7 @@ export default function ImageGallery({
               src={images[selectedIndex]}
               alt={name}
               fill
+              sizes="(max-width: 1024px) 90vw, 960px"
               className="object-contain"
             />
 
@@ -152,7 +159,7 @@ export default function ImageGallery({
               <button
                 aria-label="Previous image"
                 onClick={lightboxPrev}
-                className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/80 shadow hover:bg-white dark:bg-neutral-800/80 dark:hover:bg-neutral-800"
+                className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-background/90 text-foreground shadow hover:bg-background"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
@@ -163,7 +170,7 @@ export default function ImageGallery({
               <button
                 aria-label="Next image"
                 onClick={lightboxNext}
-                className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/80 shadow hover:bg-white dark:bg-neutral-800/80 dark:hover:bg-neutral-800"
+                className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-background/90 text-foreground shadow hover:bg-background"
               >
                 <ChevronRight className="h-5 w-5" />
               </button>
@@ -177,9 +184,11 @@ export default function ImageGallery({
                 <button
                   key={idx}
                   onClick={() => setSelectedIndex(idx)}
+                  aria-label={`Show image ${idx + 1}`}
+                  aria-pressed={selectedIndex === idx}
                   className={`relative h-14 w-14 flex-shrink-0 cursor-pointer overflow-hidden rounded transition-opacity hover:opacity-80 ${
                     idx === selectedIndex
-                      ? "ring-2 ring-black ring-offset-2 dark:ring-white dark:ring-offset-neutral-950"
+                      ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
                       : ""
                   }`}
                 >
@@ -187,6 +196,7 @@ export default function ImageGallery({
                     src={img}
                     alt={`${name} ${idx + 1}`}
                     fill
+                    sizes="56px"
                     className="object-cover"
                   />
                 </button>

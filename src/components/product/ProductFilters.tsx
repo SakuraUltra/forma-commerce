@@ -75,7 +75,7 @@ export default function ProductFilters({ filters, onChange }: Props) {
   return (
     <>
       {/* Toolbar */}
-      <div className="mb-8 mt-6 flex items-center justify-between">
+      <div className="my-8 flex items-center justify-between gap-3 border-y border-border py-5">
         {/* Left — Filters */}
         {/* Desktop filters */}
         <div className="hidden gap-2 md:flex">
@@ -88,20 +88,22 @@ export default function ProductFilters({ filters, onChange }: Props) {
           />
           {/* Color */}
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-800">
+            <DropdownMenuTrigger className="flex min-h-10 cursor-pointer items-center gap-2 rounded-md border border-border px-4 py-2 text-sm transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring">
               Color
-              <ChevronDown className="h-3.5 w-3.5 text-neutral-400" />
+              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" sideOffset={4}>
               {colorOptions.map((c) => (
                 <DropdownMenuItem
                   key={c.value}
                   onClick={() => set("color", c.value)}
-                  className={filters.color === c.value ? "font-medium" : ""}
+                  className={
+                    filters.color === c.value ? "font-medium text-primary" : ""
+                  }
                 >
                   {c.hex && (
                     <span
-                      className="inline-block h-2.5 w-2.5 rounded-full border border-neutral-200 dark:border-neutral-600"
+                      className="inline-block h-2.5 w-2.5 rounded-full border border-border"
                       style={{ backgroundColor: c.hex }}
                     />
                   )}
@@ -122,12 +124,17 @@ export default function ProductFilters({ filters, onChange }: Props) {
         {/* Mobile filter button */}
         <div className="md:hidden">
           <Sheet>
-            <SheetTrigger className="flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm">
+            <SheetTrigger className="flex min-h-10 cursor-pointer items-center gap-2 rounded-md border border-border px-4 py-2 text-sm transition-colors hover:bg-muted">
               <SlidersHorizontal className="h-4 w-4" />
               Filters
             </SheetTrigger>
-            <SheetContent side="left" className="w-72">
-              <SheetTitle className="text-lg font-semibold">Filters</SheetTitle>
+            <SheetContent
+              side="left"
+              className="overflow-y-auto p-6 data-[side=left]:w-80"
+            >
+              <SheetTitle className="font-display text-3xl font-normal">
+                Filters
+              </SheetTitle>
               <div className="mt-6 space-y-6">
                 <MobileFilterSection
                   title="Category"
@@ -142,15 +149,16 @@ export default function ProductFilters({ filters, onChange }: Props) {
                       <button
                         key={c.value}
                         onClick={() => set("color", c.value)}
-                        className={`flex w-full cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-sm ${
+                        aria-pressed={filters.color === c.value}
+                        className={`flex min-h-10 w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring ${
                           filters.color === c.value
-                            ? "bg-neutral-100 font-medium dark:bg-neutral-800"
+                            ? "bg-primary/10 font-medium text-primary"
                             : ""
                         }`}
                       >
                         {c.hex && (
                           <span
-                            className="inline-block h-2.5 w-2.5 rounded-full border border-neutral-200 dark:border-neutral-600"
+                            className="inline-block h-2.5 w-2.5 rounded-full border border-border"
                             style={{ backgroundColor: c.hex }}
                           />
                         )}
@@ -172,14 +180,17 @@ export default function ProductFilters({ filters, onChange }: Props) {
 
         {/* Right — Sort */}
         <div className="flex items-center gap-2">
-          <span className="hidden text-sm text-neutral-500 dark:text-neutral-400 sm:inline">
+          <span className="hidden text-sm text-muted-foreground sm:inline">
             Sort by
           </span>
           <Select
             value={filters.sort}
             onValueChange={(v) => v && set("sort", v)}
           >
-            <SelectTrigger aria-label="Sort products" className="h-9 w-[180px]">
+            <SelectTrigger
+              aria-label="Sort products"
+              className="h-10 w-[172px] rounded-md border-border bg-background"
+            >
               <SelectValue>
                 {
                   sortOptions.find((option) => option.value === filters.sort)
@@ -204,13 +215,13 @@ export default function ProductFilters({ filters, onChange }: Props) {
           {activeFilters.map((f) => (
             <span
               key={f.key}
-              className="flex items-center gap-1 rounded-full bg-neutral-100 px-3 py-1 text-xs dark:bg-neutral-800"
+              className="flex items-center gap-2 rounded-full bg-muted px-3 py-1.5 text-xs"
             >
               {f.label}
               <button
                 aria-label={`Remove ${f.label} filter`}
                 onClick={() => clearFilter(f.key)}
-                className="cursor-pointer text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
+                className="cursor-pointer rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
               >
                 <X className="h-3 w-3" />
               </button>
@@ -218,7 +229,7 @@ export default function ProductFilters({ filters, onChange }: Props) {
           ))}
           <button
             onClick={clearAll}
-            className="cursor-pointer text-xs text-neutral-500 underline underline-offset-2 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white"
+            className="cursor-pointer px-2 py-2 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
           >
             Clear all
           </button>
@@ -242,16 +253,16 @@ function FilterDropdown({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-800">
+      <DropdownMenuTrigger className="flex min-h-10 cursor-pointer items-center gap-2 rounded-md border border-border px-4 py-2 text-sm transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring">
         {label}
-        <ChevronDown className="h-3.5 w-3.5 text-neutral-400" />
+        <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" sideOffset={4}>
         {options.map((opt) => (
           <DropdownMenuItem
             key={opt}
             onClick={() => onSelect(opt)}
-            className={value === opt ? "font-medium" : ""}
+            className={value === opt ? "font-medium text-primary" : ""}
           >
             {opt}
           </DropdownMenuItem>
@@ -281,10 +292,9 @@ function MobileFilterSection({
           <button
             key={opt}
             onClick={() => onSelect(opt)}
-            className={`w-full cursor-pointer rounded px-2 py-1.5 text-left text-sm ${
-              value === opt
-                ? "bg-neutral-100 font-medium dark:bg-neutral-800"
-                : ""
+            aria-pressed={value === opt}
+            className={`min-h-10 w-full cursor-pointer rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring ${
+              value === opt ? "bg-primary/10 font-medium text-primary" : ""
             }`}
           >
             {opt}

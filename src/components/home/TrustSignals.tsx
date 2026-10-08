@@ -1,32 +1,40 @@
 import { Package, ShoppingBag, Sparkles } from "lucide-react";
 import { formatMoney, storeConfig } from "@/lib/store-config";
+
 export default function TrustSignals() {
   const items = [
     {
       icon: ShoppingBag,
-      title: "Try the whole journey",
-      detail: "From first find to demo checkout",
+      title: "Make yourself at home",
+      detail: "Explore the full shopping demo. No real charges.",
     },
     {
       icon: Package,
-      title: `Free demo shipping from ${formatMoney(storeConfig.shipping.freeFrom)}`,
-      detail: "See totals update with your cart",
+      title: `Demo delivery, on us from ${formatMoney(storeConfig.shipping.freeFrom)}`,
+      detail: "Shipping totals update as you build your cart.",
     },
     {
       icon: Sparkles,
-      title: "Make it your own",
-      detail: "A storefront template built to explore",
+      title: "A space to make your own",
+      detail: "An open-source storefront with room for your ideas.",
     },
   ];
   return (
-    <section className="border-y bg-muted/30">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 md:grid-cols-3">
+    <section className="border-t bg-muted/40">
+      <div className="mx-auto grid max-w-[1440px] gap-8 px-6 py-10 sm:px-10 md:grid-cols-3 md:gap-10 lg:px-14 xl:px-20">
         {items.map(({ icon: Icon, title, detail }) => (
-          <div key={title} className="flex items-center gap-4">
-            <Icon className="shrink-0" size={28} />
+          <div key={title} className="flex items-start gap-4">
+            <Icon
+              className="mt-0.5 shrink-0 text-primary"
+              size={23}
+              strokeWidth={1.25}
+              aria-hidden="true"
+            />
             <div>
-              <h2 className="text-sm font-semibold">{title}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
+              <h2 className="text-xs font-medium leading-5">{title}</h2>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                {detail}
+              </p>
             </div>
           </div>
         ))}

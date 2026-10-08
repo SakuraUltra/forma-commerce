@@ -29,7 +29,7 @@ This app also runs with `npm run build` followed by `npm run start`. Set the env
 ## Verify the deployed site
 
 - Home, product listing, all product details and sale pages load.
-- `Products → choose variant → cart → checkout → Place demo order` produces the selected items and calculated total.
+- `The collection → choose variant → cart → Checkout → Place demo order` produces the selected items and calculated total.
 - Refreshing the order URL restores the order in the same browser.
 - An order URL opened in a different browser shows the missing-order message.
 - A cart below the shipping threshold has the configured demo shipping charge; one at or above it ships free.

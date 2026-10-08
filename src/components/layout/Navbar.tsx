@@ -15,9 +15,9 @@ import { storeConfig } from "@/lib/store-config";
 import { useEffect, useState } from "react";
 
 const navLinks = [
-  { href: "/products", label: "Products" },
-  { href: "/on-sale", label: "On Sale" },
-  { href: "/about", label: "About the demo" },
+  { href: "/products", label: "The collection" },
+  { href: "/on-sale", label: "The sale edit" },
+  { href: "/about", label: "Our demo" },
 ];
 
 export default function Navbar() {
@@ -36,12 +36,12 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/80">
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-md">
+      <nav className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between gap-4 px-5 sm:h-20 sm:px-10 lg:px-14 xl:px-20">
         {/* Left: Logo */}
         <Link
           href="/"
-          className="text-xl font-bold tracking-tight dark:text-white"
+          className="text-[22px] font-medium tracking-[0.16em] sm:text-[28px]"
         >
           {storeConfig.name}
         </Link>
@@ -52,7 +52,7 @@ export default function Navbar() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="text-sm font-medium tracking-wide text-gray-900 transition-colors hover:text-gray-500 dark:text-neutral-200 dark:hover:text-white"
+                className="text-[11px] font-medium tracking-[0.04em] text-foreground transition-colors hover:text-muted-foreground"
               >
                 {link.label}
               </Link>
@@ -61,17 +61,17 @@ export default function Navbar() {
         </ul>
 
         {/* Right: Icons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-5">
           <ThemeToggle />
 
           <button
             type="button"
             aria-label="Search"
             onClick={() => setSearchOpen(true)}
-            className="flex cursor-pointer items-center gap-1.5 text-gray-700 transition-colors hover:text-gray-500 dark:text-neutral-300 dark:hover:text-white"
+            className="flex cursor-pointer items-center gap-1.5 text-foreground transition-colors hover:text-muted-foreground"
           >
-            <Search className="h-5 w-5" />
-            <kbd className="hidden rounded border border-neutral-200 px-1.5 py-0.5 text-xs text-neutral-400 dark:border-neutral-700 md:inline">
+            <Search className="h-[18px] w-[18px]" strokeWidth={1.5} />
+            <kbd className="hidden rounded-sm border px-1 py-0.5 text-[10px] text-muted-foreground xl:inline">
               ⌘K
             </kbd>
           </button>
@@ -87,29 +87,34 @@ export default function Navbar() {
           <Link
             href="/orders"
             aria-label="Demo orders"
-            className="text-gray-700 dark:text-neutral-300"
+            className="text-foreground hover:text-muted-foreground"
           >
-            <Package className="h-5 w-5" />
+            <Package className="h-[18px] w-[18px]" strokeWidth={1.5} />
           </Link>
 
           {/* Mobile: Hamburger menu */}
           <div className="md:hidden">
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger
-                className="cursor-pointer text-gray-700 transition-colors hover:text-gray-500 dark:text-neutral-300 dark:hover:text-white"
+                className="cursor-pointer text-foreground transition-colors hover:text-muted-foreground"
                 aria-label="Open menu"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-5 w-5" strokeWidth={1.5} />
               </SheetTrigger>
-              <SheetContent side="right" className="w-64">
-                <SheetTitle className="text-lg font-bold">Menu</SheetTitle>
-                <nav className="mt-6 flex flex-col gap-4">
+              <SheetContent
+                side="right"
+                className="w-72 bg-background px-6 py-8"
+              >
+                <SheetTitle className="text-xl font-medium tracking-[0.16em]">
+                  {storeConfig.name}
+                </SheetTitle>
+                <nav className="mt-8 flex flex-col gap-6">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className="text-base font-medium tracking-wide text-gray-900 transition-colors hover:text-gray-500 dark:text-neutral-200 dark:hover:text-white"
+                      className="font-display text-3xl tracking-tight transition-colors hover:text-muted-foreground"
                     >
                       {link.label}
                     </Link>
