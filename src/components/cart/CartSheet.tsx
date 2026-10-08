@@ -42,7 +42,7 @@ export default function CartSheet() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
-        className="relative cursor-pointer text-gray-700 transition-colors hover:text-gray-500 dark:text-neutral-300 dark:hover:text-white"
+        className="relative cursor-pointer rounded-sm text-foreground transition-colors hover:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         aria-label="Cart"
       >
         <ShoppingBag className="h-5 w-5" />
@@ -51,26 +51,29 @@ export default function CartSheet() {
             key={count}
             initial={{ scale: 1.5 }}
             animate={{ scale: 1 }}
-            className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[10px] font-medium text-white"
+            className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground"
           >
             {count}
           </motion.span>
         )}
       </SheetTrigger>
 
-      <SheetContent side="right" className="flex w-full flex-col sm:max-w-md">
-        <SheetTitle className="text-lg font-semibold">Your cart</SheetTitle>
+      <SheetContent
+        side="right"
+        className="flex flex-col p-6 data-[side=right]:w-full data-[side=right]:sm:max-w-md"
+      >
+        <SheetTitle className="font-display text-3xl font-normal">
+          Your cart
+        </SheetTitle>
 
         {/* Cart items */}
         {mounted && items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-4">
-            <p className="text-neutral-500 dark:text-neutral-400">
-              Your cart is empty
-            </p>
+            <p className="text-muted-foreground">Your cart is empty</p>
             <Link
               href="/products"
               onClick={() => setOpen(false)}
-              className="text-sm font-medium text-black underline underline-offset-4 hover:text-neutral-600 dark:text-white dark:hover:text-neutral-300"
+              className="text-sm font-medium text-primary underline underline-offset-4 hover:text-foreground"
             >
               Continue shopping
             </Link>
@@ -78,16 +81,17 @@ export default function CartSheet() {
         ) : (
           <>
             <div className="flex-1 overflow-y-auto py-4">
-              <ul className="space-y-4">
+              <ul className="divide-y divide-border">
                 {items.map((item) => (
-                  <li key={item.variantId} className="flex gap-4">
+                  <li key={item.variantId} className="flex gap-4 py-5">
                     {/* Thumbnail */}
-                    <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded bg-neutral-100 dark:bg-neutral-800">
+                    <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-md bg-muted">
                       {item.image ? (
                         <Image
                           src={item.image}
                           alt={item.productName}
                           fill
+                          sizes="80px"
                           className="object-cover"
                         />
                       ) : (
@@ -96,13 +100,13 @@ export default function CartSheet() {
                     </div>
 
                     {/* Info */}
-                    <div className="flex flex-1 flex-col justify-between">
-                      <div className="flex items-start justify-between">
+                    <div className="flex min-w-0 flex-1 flex-col justify-between gap-3">
+                      <div className="flex items-start justify-between gap-2">
                         <div>
                           <p className="text-sm font-medium">
                             {item.productName}
                           </p>
-                          <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                          <p className="text-xs text-muted-foreground">
                             {item.color} / {item.size}
                           </p>
                         </div>
@@ -111,8 +115,8 @@ export default function CartSheet() {
                             removeItem(item.variantId);
                             toast("Item removed");
                           }}
-                          className="cursor-pointer text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
-                          aria-label="Remove item"
+                          className="cursor-pointer rounded-sm p-1 text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+                          aria-label={`Remove ${item.productName}`}
                         >
                           <X className="h-4 w-4" />
                         </button>
@@ -124,12 +128,12 @@ export default function CartSheet() {
                         </span>
 
                         {/* Quantity */}
-                        <div className="flex items-center rounded border dark:border-neutral-700">
+                        <div className="flex items-center rounded-md border border-border">
                           <button
                             onClick={() =>
                               changeQuantity(item.variantId, item.quantity - 1)
                             }
-                            className="cursor-pointer px-2 py-1 text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white"
+                            className="cursor-pointer px-2.5 py-2 text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-40"
                             aria-label={`Decrease ${item.productName}`}
                           >
                             <Minus className="h-3 w-3" />
@@ -141,7 +145,7 @@ export default function CartSheet() {
                             onClick={() =>
                               changeQuantity(item.variantId, item.quantity + 1)
                             }
-                            className="cursor-pointer px-2 py-1 text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white"
+                            className="cursor-pointer px-2.5 py-2 text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-40"
                             disabled={
                               item.quantity >=
                               (findVariant(item.variantId)?.variant.stock ?? 0)
@@ -159,11 +163,9 @@ export default function CartSheet() {
             </div>
 
             {/* Footer */}
-            <div className="border-t pt-4 dark:border-neutral-800">
+            <div className="border-t border-border pt-5">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                  Subtotal
-                </span>
+                <span className="text-sm text-muted-foreground">Subtotal</span>
                 <span className="text-lg font-semibold">
                   {formatMoney(totalPrice())}
                 </span>
@@ -171,10 +173,13 @@ export default function CartSheet() {
               <Link
                 href="/checkout"
                 onClick={() => setOpen(false)}
-                className="mt-4 block w-full rounded-lg bg-black py-3 text-center text-sm font-medium text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+                className="mt-5 block w-full rounded-md bg-primary py-3.5 text-center text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
               >
                 Checkout
               </Link>
+              <p className="mt-3 text-center text-xs text-muted-foreground">
+                Demo checkout. No payment is taken.
+              </p>
             </div>
           </>
         )}

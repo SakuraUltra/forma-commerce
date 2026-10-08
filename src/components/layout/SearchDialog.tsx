@@ -9,7 +9,7 @@ import { useMemo, useState } from "react";
 import { products } from "@/lib/catalog";
 import { formatMoney } from "@/lib/store-config";
 
-const popularSearches = ["Watch", "Bag", "Tee", "Scarf"];
+const suggestedSearches = ["Watch", "Bag", "Tee", "Scarf"];
 
 export default function SearchDialog({
   open,
@@ -39,17 +39,17 @@ export default function SearchDialog({
         <DialogTitle className="sr-only">Search products</DialogTitle>
 
         {/* Search input */}
-        <div className="flex items-center border-b px-4 dark:border-neutral-800">
-          <Search className="h-5 w-5 shrink-0 text-neutral-400" />
+        <div className="flex items-center border-b pl-4 pr-12">
+          <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
           <input
             aria-label="Search products"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search products..."
-            className="h-14 flex-1 border-none bg-transparent px-3 text-lg outline-none placeholder:text-neutral-400"
+            className="h-16 min-w-0 flex-1 border-none bg-transparent px-3 text-base outline-none placeholder:text-muted-foreground"
           />
-          <kbd className="hidden rounded border border-neutral-200 px-1.5 py-0.5 text-xs text-neutral-400 dark:border-neutral-700 sm:inline">
+          <kbd className="hidden rounded-sm border px-1.5 py-0.5 text-[10px] text-muted-foreground sm:inline">
             ESC
           </kbd>
         </div>
@@ -57,17 +57,17 @@ export default function SearchDialog({
         {/* Results area */}
         <div className="max-h-80 overflow-y-auto p-2">
           {!query.trim() ? (
-            /* Popular searches */
+            /* Suggested pieces */
             <div className="p-3">
-              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-neutral-400">
-                Popular searches
+              <p className="eyebrow mb-4 text-muted-foreground">
+                Suggested pieces
               </p>
               <div className="flex flex-wrap gap-2">
-                {popularSearches.map((term) => (
+                {suggestedSearches.map((term) => (
                   <button
                     key={term}
                     onClick={() => setQuery(term)}
-                    className="cursor-pointer rounded-full border px-3 py-1 text-sm transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800"
+                    className="cursor-pointer rounded-full border px-3 py-1 text-sm transition-colors hover:bg-muted"
                   >
                     {term}
                   </button>
@@ -81,13 +81,14 @@ export default function SearchDialog({
                 <li key={product.slug}>
                   <button
                     onClick={() => handleSelect(product.slug)}
-                    className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted"
                   >
-                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded bg-neutral-100 dark:bg-neutral-800">
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded bg-muted">
                       <Image
                         src={product.image}
                         alt={product.name}
                         fill
+                        sizes="48px"
                         className="object-cover"
                       />
                     </div>
@@ -95,7 +96,7 @@ export default function SearchDialog({
                       <p className="truncate text-sm font-medium">
                         {product.name}
                       </p>
-                      <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                      <p className="text-sm text-neutral-500 dark:text-muted-foreground">
                         {formatMoney(product.price)}
                       </p>
                     </div>
@@ -105,7 +106,7 @@ export default function SearchDialog({
             </ul>
           ) : (
             /* No results */
-            <p className="px-3 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">
+            <p className="px-3 py-8 text-center text-sm text-neutral-500 dark:text-muted-foreground">
               No products found for &ldquo;{query}&rdquo;
             </p>
           )}

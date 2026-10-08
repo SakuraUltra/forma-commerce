@@ -28,37 +28,37 @@ export default function OnSaleContent() {
   }, [sort]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
+    <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8 md:py-16">
       {/* Sale banner */}
-      <div className="mb-8 rounded-lg border border-red-100 bg-red-50 p-4 text-center dark:border-red-900 dark:bg-red-950">
-        <p className="font-medium text-red-600">
+      <div className="mb-10 rounded-lg border border-border bg-muted/60 px-5 py-4 text-center">
+        <p className="text-xs font-medium uppercase tracking-[0.14em] text-primary">
           Selected favourites, reduced prices
         </p>
       </div>
 
       {/* Header */}
-      <div className="flex items-baseline justify-between">
+      <div className="flex items-baseline justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">On Sale</h1>
-          <p className="mt-1 text-neutral-500 dark:text-neutral-400">
-            Limited time offers on selected items
+          <h1 className="font-display text-4xl tracking-tight md:text-5xl">
+            On Sale
+          </h1>
+          <p className="mt-4 text-sm leading-7 text-muted-foreground">
+            A few good finds, at a little less.
           </p>
         </div>
-        <span className="text-sm text-neutral-500 dark:text-neutral-400">
+        <span className="shrink-0 text-xs text-muted-foreground">
           {sorted.length} products
         </span>
       </div>
 
       {/* Sort */}
-      <div className="mt-6 mb-6 flex items-center gap-2">
-        <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-          Sort by
-        </span>
+      <div className="my-8 flex items-center gap-3 border-y border-border py-5">
+        <span className="text-sm font-medium text-foreground">Sort by</span>
         <select
           aria-label="Sort sale products"
           value={sort}
           onChange={(e) => setSort(e.target.value as SortOption)}
-          className="rounded-lg border px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:focus:ring-white"
+          className="min-h-10 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <option value="biggest-discount">Biggest discount</option>
           <option value="price-asc">Price: Low to High</option>
@@ -68,7 +68,7 @@ export default function OnSaleContent() {
 
       {/* Grid */}
       {sorted.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
           {sorted.map((p, i) => (
             <MotionDiv key={p.slug} index={i}>
               <ProductCard
@@ -85,12 +85,10 @@ export default function OnSaleContent() {
         </div>
       ) : (
         <div className="py-20 text-center">
-          <p className="text-neutral-500 dark:text-neutral-400">
-            No items on sale right now
-          </p>
+          <p className="text-muted-foreground">No items on sale right now</p>
           <Link
             href="/products"
-            className="mt-4 inline-block text-sm font-medium text-black underline underline-offset-4 dark:text-white"
+            className="mt-4 inline-block text-sm font-medium text-primary underline underline-offset-4"
           >
             Browse all products
           </Link>

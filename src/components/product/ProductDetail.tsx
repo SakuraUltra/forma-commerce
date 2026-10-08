@@ -7,6 +7,7 @@ import type { Product as ProductWithVariants } from "@/lib/catalog";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function ProductDetail({
   product,
@@ -65,29 +66,40 @@ export default function ProductDetail({
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
-      <div className="flex flex-col gap-8 md:flex-row">
+    <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 md:py-12">
+      <Link
+        href="/products"
+        className="mb-8 inline-flex py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+      >
+        ← Back to the collection
+      </Link>
+      <div className="flex flex-col gap-8 md:flex-row md:gap-12">
         {/* Left — Image gallery */}
         <div className="md:w-1/2">
           <ImageGallery images={product.images} name={product.name} />
         </div>
 
         {/* Right — Product info */}
-        <div className="md:w-1/2 md:pl-8">
-          <h1 className="text-2xl font-semibold md:text-3xl">{product.name}</h1>
+        <div className="md:w-1/2 md:py-4 lg:pl-6">
+          <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            {product.category}
+          </p>
+          <h1 className="font-display text-4xl leading-tight tracking-tight lg:text-5xl">
+            {product.name}
+          </h1>
 
           {/* Price */}
-          <div className="mt-2 flex items-center gap-3">
-            <span className="text-xl font-semibold">
+          <div className="mt-5 flex items-center gap-3">
+            <span className="text-xl font-medium">
               {formatMoney(displayPrice)}
             </span>
             {product.compareAtPrice &&
               product.compareAtPrice > displayPrice && (
                 <>
-                  <span className="text-lg text-neutral-400 line-through">
+                  <span className="text-base text-muted-foreground line-through">
                     {formatMoney(product.compareAtPrice)}
                   </span>
-                  <span className="rounded bg-red-500 px-2 py-0.5 text-xs font-medium text-white">
+                  <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
                     -{discountPercent}%
                   </span>
                 </>
@@ -96,17 +108,17 @@ export default function ProductDetail({
 
           {/* Description */}
           {product.description && (
-            <p className="mt-4 leading-relaxed text-neutral-600 dark:text-neutral-400">
+            <p className="mt-6 max-w-lg text-sm leading-7 text-muted-foreground">
               {product.description}
             </p>
           )}
 
           {/* Color selector */}
-          <div className="mt-6">
-            <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+          <div className="mt-8 border-t border-border pt-7">
+            <h3 className="text-sm font-medium text-foreground">
               Color
               {selectedColor && (
-                <span className="ml-2 font-normal text-neutral-500 dark:text-neutral-400">
+                <span className="ml-2 font-normal text-muted-foreground">
                   — {selectedColor}
                 </span>
               )}
@@ -119,9 +131,9 @@ export default function ProductDetail({
                     setSelectedColor(color);
                     setSelectedSize(sizes.length === 1 ? sizes[0] : null);
                   }}
-                  className={`h-8 w-8 cursor-pointer rounded-full border-2 border-neutral-200 dark:border-neutral-600 ${
+                  className={`h-10 w-10 cursor-pointer rounded-full border-2 border-border transition-shadow focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring ${
                     selectedColor === color
-                      ? "ring-2 ring-black ring-offset-2 dark:ring-white dark:ring-offset-neutral-950"
+                      ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
                       : ""
                   }`}
                   style={{
@@ -139,9 +151,7 @@ export default function ProductDetail({
 
           {/* Size selector */}
           <div className="mt-6">
-            <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
-              Size
-            </h3>
+            <h3 className="text-sm font-medium text-foreground">Size</h3>
             <div className="mt-3 flex flex-wrap gap-2">
               {sizes.map((size) => {
                 const stock = stockForSize(size);
@@ -154,12 +164,12 @@ export default function ProductDetail({
                     onClick={() => !outOfStock && setSelectedSize(size)}
                     disabled={outOfStock}
                     aria-pressed={isSelected}
-                    className={`cursor-pointer rounded border px-4 py-2 text-sm ${
+                    className={`min-h-11 min-w-12 cursor-pointer rounded-md border px-4 py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
                       isSelected
-                        ? "bg-black text-white dark:bg-white dark:text-black"
+                        ? "border-primary bg-primary text-primary-foreground"
                         : outOfStock
-                          ? "cursor-not-allowed border-neutral-200 text-neutral-300 line-through opacity-50 dark:border-neutral-700 dark:text-neutral-600"
-                          : "border-neutral-300 hover:border-black dark:border-neutral-600 dark:hover:border-white"
+                          ? "cursor-not-allowed border-border text-muted-foreground line-through opacity-50"
+                          : "border-border hover:border-primary"
                     }`}
                   >
                     {size}
@@ -174,8 +184,8 @@ export default function ProductDetail({
             <p
               className={`mt-4 text-sm ${
                 selectedVariant.stock <= 5
-                  ? "text-amber-600"
-                  : "text-neutral-500"
+                  ? "text-amber-700 dark:text-amber-400"
+                  : "text-muted-foreground"
               }`}
             >
               {selectedVariant.stock} in stock
@@ -197,10 +207,13 @@ export default function ProductDetail({
                 );
               }
             }}
-            className="mt-6 w-full cursor-pointer rounded-lg bg-black py-3 text-sm font-medium text-white hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+            className="mt-7 min-h-12 w-full cursor-pointer rounded-md bg-primary py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50"
           >
             Add to cart
           </motion.button>
+          <p className="mt-4 text-center text-xs leading-6 text-muted-foreground">
+            Try a demo order. No account or payment needed.
+          </p>
         </div>
       </div>
     </div>

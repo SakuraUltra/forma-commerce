@@ -34,17 +34,17 @@ export default function OrdersContent({
     );
   const order = orders.find((saved) => saved.id === id);
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-12">
+    <div className="mx-auto w-full max-w-4xl px-5 py-10 sm:px-8 md:py-16">
       <Link
         href={id ? "/orders" : "/products"}
         className="text-sm text-muted-foreground hover:underline"
       >
         ← {id ? "All demo orders" : "Continue shopping"}
       </Link>
-      <h1 className="mt-6 text-3xl font-semibold">
+      <h1 className="mt-6 font-display text-4xl tracking-tight md:text-5xl">
         {id ? (tracking ? "Demo delivery" : "Demo order") : "Your demo orders"}
       </h1>
-      <p className="mt-3 text-muted-foreground">
+      <p className="mt-4 text-sm leading-7 text-muted-foreground">
         Saved on this browser. No real purchase or delivery takes place.
       </p>
       {error && (
@@ -54,8 +54,8 @@ export default function OrdersContent({
       )}
       {id ? (
         !order ? (
-          <div className="my-12 rounded-xl border p-8">
-            <h2 className="text-xl font-medium">
+          <div className="my-12 rounded-xl border border-border bg-muted/30 p-8">
+            <h2 className="font-display text-2xl">
               Order not found in this browser
             </h2>
             <p className="my-3 text-muted-foreground">
@@ -68,9 +68,9 @@ export default function OrdersContent({
           </div>
         ) : (
           <>
-            <div className="my-8 rounded-xl border p-6">
+            <div className="my-8 rounded-xl border border-border bg-muted/50 p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm text-emerald-900">
+                <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
                   {orderStages[order.stage]} · Demo
                 </span>
                 <time
@@ -85,8 +85,8 @@ export default function OrdersContent({
               </p>
             </div>
             {tracking ? (
-              <section className="rounded-xl border p-6">
-                <h2 className="text-lg font-semibold">
+              <section className="rounded-xl border border-border p-6 sm:p-8">
+                <h2 className="font-display text-2xl">
                   Explore the delivery timeline
                 </h2>
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -100,13 +100,15 @@ export default function OrdersContent({
                       className={`flex items-center gap-3 ${index > order.stage ? "text-muted-foreground" : ""}`}
                     >
                       {index <= order.stage ? (
-                        <CheckCircle2 size={22} className="text-emerald-600" />
+                        <CheckCircle2 size={22} className="text-primary" />
                       ) : (
                         <Circle size={22} />
                       )}
                       <span>{stage}</span>
                       {index === order.stage && (
-                        <span className="text-xs">Current demo stage</span>
+                        <span className="ml-auto rounded-full bg-muted px-2 py-1 text-[10px] uppercase tracking-wide">
+                          Current demo stage
+                        </span>
                       )}
                     </li>
                   ))}
@@ -114,14 +116,14 @@ export default function OrdersContent({
                 <button
                   disabled={order.stage === orderStages.length - 1}
                   onClick={() => act(() => advanceDemoOrder(order.id))}
-                  className="rounded-lg bg-foreground px-5 py-3 text-sm font-medium text-background disabled:opacity-40"
+                  className="cursor-pointer rounded-md bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {order.stage === orderStages.length - 1
                     ? "Demo complete"
                     : "Simulate next delivery step"}
                 </button>
                 <Link
-                  className="ml-4 inline-block py-3 text-sm underline"
+                  className="inline-block px-4 py-3 text-sm text-primary underline underline-offset-4"
                   href={`/orders/${order.id}`}
                 >
                   Order details
@@ -129,7 +131,7 @@ export default function OrdersContent({
               </section>
             ) : (
               <>
-                <ul className="divide-y rounded-xl border px-6">
+                <ul className="divide-y divide-border rounded-xl border border-border px-6">
                   {order.items.map((item) => (
                     <li
                       key={item.variantId}
@@ -170,14 +172,14 @@ export default function OrdersContent({
                           : "Free"}
                       </dd>
                     </div>
-                    <div className="flex justify-between border-t pt-3 font-semibold">
+                    <div className="flex justify-between gap-4 border-t border-border pt-3 font-semibold">
                       <dt>Demo total · No charge</dt>
                       <dd>{formatMoney(order.total, order.currency)}</dd>
                     </div>
                   </dl>
                 </div>
                 <Link
-                  className="inline-flex items-center gap-2 rounded-lg bg-foreground px-5 py-3 text-sm font-medium text-background"
+                  className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                   href={`/orders/${order.id}/tracking`}
                 >
                   <Package size={18} /> Explore demo delivery
@@ -193,7 +195,7 @@ export default function OrdersContent({
               <li key={saved.id}>
                 <Link
                   href={`/orders/${saved.id}`}
-                  className="block rounded-xl border p-6 transition-colors hover:bg-muted/50"
+                  className="block rounded-xl border border-border p-6 transition-colors hover:border-primary/40 hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                 >
                   <div className="flex flex-wrap justify-between gap-3">
                     <span className="font-medium">
@@ -250,12 +252,12 @@ export default function OrdersContent({
       ) : (
         <div className="py-20 text-center">
           <Package className="mx-auto mb-4 text-muted-foreground" size={36} />
-          <h2 className="text-xl font-medium">No orders yet</h2>
+          <h2 className="font-display text-2xl">No orders yet</h2>
           <p className="my-3 text-muted-foreground">
             Place a demo order to see your items and try the delivery timeline.
           </p>
           <Link
-            className="mt-3 inline-block rounded-lg bg-foreground px-5 py-3 text-sm text-background"
+            className="mt-3 inline-block rounded-md bg-primary px-5 py-3.5 text-sm text-primary-foreground transition-colors hover:bg-primary/90"
             href="/products"
           >
             Browse products

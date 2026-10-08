@@ -1,8 +1,8 @@
 // Edit this file to give the template your own identity. Prices use minor units (cents).
 export const storeConfig = {
-  name: "MY SHOP",
+  name: "FORMA",
   description:
-    "A minimal fashion storefront. Browse, build a cart and try a complete demo checkout.",
+    "Everyday pieces, thoughtfully brought together. Explore FORMA, a boutique storefront demo with a complete guest shopping journey.",
   currency: "USD",
   locale: "en-US",
   shipping: { freeFrom: 4900, standard: 499 },

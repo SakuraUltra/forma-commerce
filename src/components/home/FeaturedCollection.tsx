@@ -1,49 +1,42 @@
 import ProductCard from "@/components/product/ProductCard";
-import MotionDiv from "@/components/ui/MotionDiv";
-import type { Product as ProductWithVariants } from "@/lib/catalog";
+import type { Product } from "@/lib/catalog";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 export default function FeaturedCollection({
   products,
 }: {
-  products: ProductWithVariants[];
+  products: Product[];
 }) {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 md:py-24">
-      {/* Header */}
-      <div className="mb-8 flex items-baseline justify-between">
-        <h2 className="text-2xl font-semibold">Featured collection</h2>
+    <section className="mx-auto max-w-[1440px] px-6 py-16 sm:px-10 lg:px-14 lg:py-24 xl:px-20">
+      <div className="mb-9 flex flex-wrap items-end justify-between gap-5 sm:mb-12">
+        <div>
+          <p className="eyebrow text-muted-foreground">A few favourites</p>
+          <h2 className="mt-3 font-display text-4xl tracking-[-0.035em] sm:text-5xl">
+            Good things, on repeat.
+          </h2>
+        </div>
         <Link
           href="/products"
-          className="text-sm text-neutral-500 transition-colors hover:text-black dark:text-neutral-400 dark:hover:text-white"
+          className="collection-link border-b border-foreground/40 pb-1.5 text-xs"
         >
-          View all →
+          Shop all pieces <ArrowUpRight size={15} aria-hidden="true" />
         </Link>
       </div>
-
-      {/* Product grid */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-6">
-        {products.map((product, idx) => {
-          const minPrice = Math.min(...product.variants.map((v) => v.price));
-          const colors = [...new Set(product.variants.map((v) => v.color))];
-          return (
-            <MotionDiv key={product.slug} index={idx}>
-              <ProductCard
-                name={product.name}
-                price={minPrice}
-                originalPrice={product.compareAtPrice ?? undefined}
-                image={product.images[0] ?? undefined}
-                slug={product.slug}
-                colors={colors}
-                badge={
-                  product.compareAtPrice
-                    ? `-${Math.round((1 - minPrice / product.compareAtPrice) * 100)}%`
-                    : "New"
-                }
-              />
-            </MotionDiv>
-          );
-        })}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-9 md:grid-cols-4 md:gap-x-6">
+        {products.map((product) => (
+          <ProductCard
+            key={product.slug}
+            name={product.name}
+            price={product.price}
+            originalPrice={product.compareAtPrice}
+            image={product.images[0]}
+            slug={product.slug}
+            colors={product.colorHexes}
+            badge={product.compareAtPrice ? "The sale edit" : undefined}
+          />
+        ))}
       </div>
     </section>
   );

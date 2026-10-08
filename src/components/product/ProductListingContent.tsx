@@ -28,20 +28,32 @@ export default function ProductListingContent() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
+    <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8 md:py-16">
       {/* Header */}
-      <div className="flex items-baseline justify-between">
-        <h1 className="text-2xl font-semibold">All products</h1>
-        <span className="text-sm text-neutral-500 dark:text-neutral-400">
+      <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+        The everyday collection
+      </p>
+      <div className="flex items-baseline justify-between gap-4">
+        <h1 className="font-display text-4xl tracking-tight md:text-5xl">
+          All products
+        </h1>
+        <span
+          className="shrink-0 text-xs text-muted-foreground"
+          aria-live="polite"
+        >
           {filtered.length} products
         </span>
       </div>
+      <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">
+        Simple shapes, easy layers and the finishing touches. Find your everyday
+        favourites.
+      </p>
 
       <ProductFilters filters={filters} onChange={setFilters} />
 
       {/* Grid */}
       {filtered.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
           {filtered.map((p, i) => (
             <MotionDiv key={p.slug} index={i}>
               <ProductCard
@@ -61,8 +73,8 @@ export default function ProductListingContent() {
           ))}
         </div>
       ) : (
-        <div className="py-20 text-center">
-          <p className="text-neutral-500 dark:text-neutral-400">
+        <div className="rounded-xl border border-dashed border-border py-20 text-center">
+          <p className="font-display text-2xl text-foreground">
             No products found
           </p>
           <button
@@ -74,7 +86,7 @@ export default function ProductListingContent() {
                 sort: filters.sort,
               })
             }
-            className="mt-4 cursor-pointer text-sm font-medium text-black underline underline-offset-4 dark:text-white"
+            className="mt-4 cursor-pointer text-sm font-medium text-primary underline underline-offset-4"
           >
             Clear filters
           </button>

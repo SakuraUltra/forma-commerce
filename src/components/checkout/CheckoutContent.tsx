@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useCartStore } from "@/store/cart";
@@ -42,30 +43,37 @@ export default function CheckoutContent() {
     );
   if (!items.length && !submitting)
     return (
-      <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <h1 className="text-3xl font-semibold">Your cart is empty</h1>
+      <div className="mx-auto max-w-3xl px-5 py-24 text-center">
+        <h1 className="font-display text-4xl tracking-tight">
+          Your cart is empty
+        </h1>
         <p className="my-4 text-muted-foreground">
           Find something you like before checking out.
         </p>
-        <Link className="underline" href="/products">
+        <Link
+          className="mt-4 inline-block rounded-md bg-primary px-6 py-3 text-sm text-primary-foreground"
+          href="/products"
+        >
           Browse products
         </Link>
       </div>
     );
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-12">
+    <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 md:py-16">
       <Link
         href="/products"
         className="text-sm text-muted-foreground hover:underline"
       >
         ← Continue shopping
       </Link>
-      <h1 className="mt-6 text-3xl font-semibold">Demo checkout</h1>
-      <p className="mt-2 text-muted-foreground">
+      <h1 className="mt-6 font-display text-4xl tracking-tight md:text-5xl">
+        Demo checkout
+      </h1>
+      <p className="mt-4 text-sm leading-7 text-muted-foreground">
         Try the full experience. No payment, emails or shipments.
       </p>
       <form
-        className="mt-10 grid gap-10 md:grid-cols-2"
+        className="mt-10 grid items-start gap-10 md:grid-cols-2 lg:gap-16"
         onSubmit={(event) => {
           event.preventDefault();
           if (submitted.current) return;
@@ -89,12 +97,12 @@ export default function CheckoutContent() {
         }}
       >
         <section>
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="text-lg font-semibold">Shipping details</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-2xl">Shipping details</h2>
             <button
               type="button"
               onClick={() => setAddress({ ...exampleAddress })}
-              className="text-sm underline"
+              className="text-xs text-primary underline underline-offset-4"
             >
               Use example details
             </button>
@@ -115,14 +123,15 @@ export default function CheckoutContent() {
                   onChange={(event) =>
                     setAddress({ ...address, [field]: event.target.value })
                   }
-                  className="mt-2 block w-full rounded-lg border bg-background px-3 py-2.5"
+                  className="mt-2 block w-full rounded-md border border-border bg-background px-3 py-3 text-sm outline-none transition-shadow focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/30"
                 />
               </label>
             ))}
           </div>
-          <div className="mt-8 rounded-xl border p-5">
+          <div className="mt-8 rounded-lg border border-border bg-muted/30 p-5">
             <h2 className="flex items-center gap-2 font-semibold">
-              <LockKeyhole size={18} /> Simulated payment
+              <LockKeyhole size={18} className="text-primary" /> Simulated
+              payment
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
               No card details needed. Placing a demo order will never charge
@@ -130,21 +139,29 @@ export default function CheckoutContent() {
             </p>
           </div>
         </section>
-        <section className="h-fit rounded-2xl bg-muted/50 p-6 md:p-8">
-          <h2 className="text-lg font-semibold">Order summary</h2>
-          <ul className="my-6 divide-y">
+        <section className="h-fit rounded-xl border border-border bg-muted/50 p-5 sm:p-8">
+          <h2 className="font-display text-2xl">Order summary</h2>
+          <ul className="my-6 divide-y divide-border">
             {items.map((item) => (
-              <li
-                key={item.variantId}
-                className="flex justify-between gap-4 py-4"
-              >
-                <div>
-                  <p className="font-medium">{item.productName}</p>
+              <li key={item.variantId} className="flex items-center gap-4 py-4">
+                {item.image && (
+                  <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-md bg-background">
+                    <Image
+                      src={item.image}
+                      alt={item.productName}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium">{item.productName}</p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {item.color} / {item.size} · Qty {item.quantity}
                   </p>
                 </div>
-                <span className="shrink-0">
+                <span className="shrink-0 text-sm">
                   {formatMoney(item.price * item.quantity)}
                 </span>
               </li>
@@ -159,7 +176,7 @@ export default function CheckoutContent() {
               <dt>Demo shipping</dt>
               <dd>{totals.shipping ? formatMoney(totals.shipping) : "Free"}</dd>
             </div>
-            <div className="flex justify-between border-t pt-4 text-lg font-semibold">
+            <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold">
               <dt>Demo total</dt>
               <dd>{formatMoney(totals.total)}</dd>
             </div>
@@ -178,7 +195,7 @@ export default function CheckoutContent() {
           )}
           <button
             disabled={submitting || !items.length}
-            className="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-foreground px-4 py-3 font-medium text-background disabled:opacity-50"
+            className="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-primary px-4 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Check size={18} />
             {submitting ? "Saving your order…" : "Place demo order"}
