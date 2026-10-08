@@ -1,207 +1,189 @@
 "use client";
-
-import { Input } from "@/components/ui/input";
-import { useCartStore } from "@/store/cart";
-import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useRef, useState } from "react";
+import { useCartStore } from "@/store/cart";
+import { useClientReady } from "@/lib/use-client-ready";
+import {
+  createDemoOrder,
+  exampleAddress,
+  saveDemoOrder,
+  type ShippingAddress,
+} from "@/lib/orders";
+import { formatMoney, orderTotals, storeConfig } from "@/lib/store-config";
+import { Check, LockKeyhole } from "lucide-react";
 
+const labels: Record<keyof ShippingAddress, string> = {
+  name: "Full name",
+  address: "Street address",
+  city: "City",
+  postalCode: "Postal code",
+  country: "Country",
+};
 export default function CheckoutContent() {
+  const ready = useClientReady();
+  const items = useCartStore((state) => state.items);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const [address, setAddress] = useState<ShippingAddress>({
+    ...exampleAddress,
+  });
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const submitted = useRef(false);
   const router = useRouter();
-  const items = useCartStore((s) => s.items);
-  const totalPrice = useCartStore((s) => s.totalPrice);
-  const clearCart = useCartStore((s) => s.clearCart);
-
-  const [mounted, setMounted] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setIsLoggedIn(localStorage.getItem("auth") === "true");
-  }, []);
-
-  const handlePlaceOrder = (e: React.FormEvent) => {
-    e.preventDefault();
-    clearCart();
-    toast.success("Order placed successfully");
-    router.push("/orders/demo-order");
-  };
-
-  const subtotal = mounted ? totalPrice() : 0;
-
+  const totals = orderTotals(
+    items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+  );
+  if (!ready)
+    return (
+      <p className="p-12" role="status">
+        Loading your cart…
+      </p>
+    );
+  if (!items.length && !submitting)
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-24 text-center">
+        <h1 className="text-3xl font-semibold">Your cart is empty</h1>
+        <p className="my-4 text-muted-foreground">
+          Find something you like before checking out.
+        </p>
+        <Link className="underline" href="/products">
+          Browse products
+        </Link>
+      </div>
+    );
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
-      <h1 className="mb-8 text-2xl font-semibold">Checkout</h1>
-
-      <form onSubmit={handlePlaceOrder} className="flex flex-col gap-12 md:flex-row">
-        {/* Left — Form */}
-        <div className="md:w-3/5">
-          {/* Contact */}
-          <section>
-            <h2 className="mb-4 text-lg font-semibold">Contact</h2>
-            <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-              Email
-            </label>
-            <Input
-              id="email"
-              type="email"
-              required
-              defaultValue={isLoggedIn ? "demo@example.com" : ""}
-              disabled={isLoggedIn}
-              className="mt-1 h-10"
-            />
-          </section>
-
-          {/* Shipping address */}
-          <section className="mt-8">
-            <h2 className="mb-4 text-lg font-semibold">Shipping address</h2>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                  Name
-                </label>
-                <Input id="name" required className="mt-1 h-10" />
-              </div>
-              <div>
-                <label htmlFor="address" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                  Address
-                </label>
-                <Input id="address" required className="mt-1 h-10" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="city" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    City
-                  </label>
-                  <Input id="city" required className="mt-1 h-10" />
-                </div>
-                <div>
-                  <label htmlFor="state" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    State
-                  </label>
-                  <Input id="state" required className="mt-1 h-10" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="zip" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    ZIP code
-                  </label>
-                  <Input id="zip" required className="mt-1 h-10" />
-                </div>
-                <div>
-                  <label htmlFor="country" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    Country
-                  </label>
-                  <select
-                    id="country"
-                    required
-                    className="mt-1 h-10 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:border-neutral-700 dark:bg-neutral-900"
-                  >
-                    <option value="US">United States</option>
-                    <option value="UK">United Kingdom</option>
-                    <option value="CA">Canada</option>
-                    <option value="AU">Australia</option>
-                    <option value="DE">Germany</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Payment */}
-          <section className="mt-8">
-            <h2 className="mb-4 text-lg font-semibold">Payment method</h2>
-            <p className="mb-3 text-xs text-neutral-400">Visa · Mastercard · Amex</p>
-            <div className="space-y-4 rounded-lg border p-4 dark:border-neutral-700">
-              <div>
-                <label htmlFor="card" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                  Card number
-                </label>
-                <Input id="card" placeholder="4242 4242 4242 4242" required className="mt-1 h-10" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="expiry" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    Expiry
-                  </label>
-                  <Input id="expiry" placeholder="MM/YY" required className="mt-1 h-10" />
-                </div>
-                <div>
-                  <label htmlFor="cvc" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    CVC
-                  </label>
-                  <Input id="cvc" placeholder="123" required className="mt-1 h-10" />
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        {/* Right — Order summary */}
-        <div className="md:w-2/5">
-          <div className="h-fit rounded-lg border bg-neutral-50 p-6 md:sticky md:top-24 dark:border-neutral-700 dark:bg-neutral-900">
-            <h2 className="text-lg font-semibold">Order summary</h2>
-
-            {mounted && items.length > 0 ? (
-              <ul className="mt-4">
-                {items.map((item) => (
-                  <li key={item.variantId} className="flex gap-3 border-b py-3 dark:border-neutral-700">
-                    <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded bg-neutral-200 dark:bg-neutral-800">
-                      {item.image ? (
-                        <Image src={item.image} alt={item.productName} fill className="object-cover" />
-                      ) : (
-                        <div className="h-full w-full" />
-                      )}
-                    </div>
-                    <div className="flex flex-1 flex-col justify-between">
-                      <div>
-                        <p className="text-sm font-medium">{item.productName}</p>
-                        <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                          {item.color} / {item.size}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-neutral-500 dark:text-neutral-400">Qty {item.quantity}</span>
-                        <span className="text-sm font-medium">
-                          ${((item.price * item.quantity) / 100).toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">No items in cart</p>
-            )}
-
-            <div className="mt-4 space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-neutral-600 dark:text-neutral-400">Subtotal</span>
-                <span>${(subtotal / 100).toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-neutral-600 dark:text-neutral-400">Shipping</span>
-                <span>Free</span>
-              </div>
-            </div>
-
-            <div className="mt-4 border-t pt-4 dark:border-neutral-700">
-              <div className="flex justify-between text-lg font-semibold">
-                <span>Total</span>
-                <span>${(subtotal / 100).toFixed(2)}</span>
-              </div>
-            </div>
-
+    <div className="mx-auto w-full max-w-6xl px-4 py-12">
+      <Link
+        href="/products"
+        className="text-sm text-muted-foreground hover:underline"
+      >
+        ← Continue shopping
+      </Link>
+      <h1 className="mt-6 text-3xl font-semibold">Demo checkout</h1>
+      <p className="mt-2 text-muted-foreground">
+        Try the full experience. No payment, emails or shipments.
+      </p>
+      <form
+        className="mt-10 grid gap-10 md:grid-cols-2"
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (submitted.current) return;
+          submitted.current = true;
+          setSubmitting(true);
+          setError("");
+          try {
+            const order = createDemoOrder(items, address);
+            saveDemoOrder(order);
+            clearCart();
+            router.push(`/orders/${order.id}`);
+          } catch (cause) {
+            submitted.current = false;
+            setSubmitting(false);
+            setError(
+              cause instanceof Error
+                ? cause.message
+                : "Could not save your order. Enable browser storage and try again.",
+            );
+          }
+        }}
+      >
+        <section>
+          <div className="flex items-center justify-between gap-4">
+            <h2 className="text-lg font-semibold">Shipping details</h2>
             <button
-              type="submit"
-              className="mt-4 w-full cursor-pointer rounded-lg bg-black py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+              type="button"
+              onClick={() => setAddress({ ...exampleAddress })}
+              className="text-sm underline"
             >
-              Place order
+              Use example details
             </button>
           </div>
-        </div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Use fictional details. This demo saves orders in this browser only.
+          </p>
+          <div className="mt-6 space-y-4">
+            {(Object.keys(labels) as (keyof ShippingAddress)[]).map((field) => (
+              <label key={field} className="block text-sm font-medium">
+                {labels[field]}
+                <input
+                  required
+                  maxLength={200}
+                  autoComplete="off"
+                  name={field}
+                  value={address[field]}
+                  onChange={(event) =>
+                    setAddress({ ...address, [field]: event.target.value })
+                  }
+                  className="mt-2 block w-full rounded-lg border bg-background px-3 py-2.5"
+                />
+              </label>
+            ))}
+          </div>
+          <div className="mt-8 rounded-xl border p-5">
+            <h2 className="flex items-center gap-2 font-semibold">
+              <LockKeyhole size={18} /> Simulated payment
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              No card details needed. Placing a demo order will never charge
+              you.
+            </p>
+          </div>
+        </section>
+        <section className="h-fit rounded-2xl bg-muted/50 p-6 md:p-8">
+          <h2 className="text-lg font-semibold">Order summary</h2>
+          <ul className="my-6 divide-y">
+            {items.map((item) => (
+              <li
+                key={item.variantId}
+                className="flex justify-between gap-4 py-4"
+              >
+                <div>
+                  <p className="font-medium">{item.productName}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {item.color} / {item.size} · Qty {item.quantity}
+                  </p>
+                </div>
+                <span className="shrink-0">
+                  {formatMoney(item.price * item.quantity)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <dl className="space-y-3 text-sm">
+            <div className="flex justify-between">
+              <dt>Subtotal</dt>
+              <dd>{formatMoney(totals.subtotal)}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt>Demo shipping</dt>
+              <dd>{totals.shipping ? formatMoney(totals.shipping) : "Free"}</dd>
+            </div>
+            <div className="flex justify-between border-t pt-4 text-lg font-semibold">
+              <dt>Demo total</dt>
+              <dd>{formatMoney(totals.total)}</dd>
+            </div>
+          </dl>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Free shipping from {formatMoney(storeConfig.shipping.freeFrom)}.
+            Taxes are not calculated in this demo.
+          </p>
+          {error && (
+            <p
+              role="alert"
+              className="mt-4 rounded bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300"
+            >
+              {error}
+            </p>
+          )}
+          <button
+            disabled={submitting || !items.length}
+            className="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-foreground px-4 py-3 font-medium text-background disabled:opacity-50"
+          >
+            <Check size={18} />
+            {submitting ? "Saving your order…" : "Place demo order"}
+          </button>
+        </section>
       </form>
     </div>
   );

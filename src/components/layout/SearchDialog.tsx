@@ -1,29 +1,13 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
-const products = [
-  { name: "Classic Cotton Tee", slug: "classic-cotton-tee", price: 2999, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80" },
-  { name: "Leather Crossbody Bag", slug: "leather-crossbody-bag", price: 8999, image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80" },
-  { name: "Minimalist Watch", slug: "minimalist-watch", price: 12999, image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800&q=80" },
-  { name: "Wool Blend Scarf", slug: "wool-blend-scarf", price: 4999, image: "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=800&q=80" },
-  { name: "Canvas Sneakers", slug: "canvas-sneakers", price: 5999, image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&q=80" },
-  { name: "Aviator Sunglasses", slug: "aviator-sunglasses", price: 7999, image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80" },
-  { name: "Soy Wax Candle", slug: "soy-wax-candle", price: 2499, image: "https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=800&q=80" },
-  { name: "Canvas Tote Bag", slug: "canvas-tote-bag", price: 3499, image: "https://images.unsplash.com/photo-1597633425046-08f5110420b5?w=800&q=80" },
-  { name: "Slim Fit Chinos", slug: "slim-fit-chinos", price: 5499, image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&q=80" },
-  { name: "Chronograph Watch", slug: "chronograph-watch", price: 19999, image: "https://images.unsplash.com/photo-1639037687665-4f60498e0498?w=800&q=80" },
-  { name: "Merino Wool Beanie", slug: "merino-wool-beanie", price: 1999, image: "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=800&q=80" },
-  { name: "Linen Button-Down", slug: "linen-button-down", price: 4499, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80" },
-];
+import { products } from "@/lib/catalog";
+import { formatMoney } from "@/lib/store-config";
 
 const popularSearches = ["Watch", "Bag", "Tee", "Scarf"];
 
@@ -37,15 +21,10 @@ export default function SearchDialog({
   const router = useRouter();
   const [query, setQuery] = useState("");
 
-  // Reset query when dialog opens
-  useEffect(() => {
-    if (open) setQuery("");
-  }, [open]);
-
   const results = useMemo(() => {
     if (!query.trim()) return [];
     return products.filter((p) =>
-      p.name.toLowerCase().includes(query.toLowerCase()),
+      p.name.toLowerCase().includes(query.trim().toLowerCase()),
     );
   }, [query]);
 
@@ -63,6 +42,7 @@ export default function SearchDialog({
         <div className="flex items-center border-b px-4 dark:border-neutral-800">
           <Search className="h-5 w-5 shrink-0 text-neutral-400" />
           <input
+            aria-label="Search products"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -112,9 +92,11 @@ export default function SearchDialog({
                       />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">{product.name}</p>
+                      <p className="truncate text-sm font-medium">
+                        {product.name}
+                      </p>
                       <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                        ${(product.price / 100).toFixed(2)}
+                        {formatMoney(product.price)}
                       </p>
                     </div>
                   </button>

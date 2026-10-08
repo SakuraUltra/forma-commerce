@@ -3,21 +3,10 @@ import HeroBanner from "@/components/home/HeroBanner";
 import OnSale from "@/components/home/OnSale";
 import TrustSignals from "@/components/home/TrustSignals";
 import FadeIn from "@/components/ui/FadeIn";
-import { prisma } from "@/lib/prisma";
+import { products, saleProducts } from "@/lib/catalog";
 
-export default async function Home() {
-  const [featuredProducts, saleProducts] = await Promise.all([
-    prisma.product.findMany({
-      where: { isActive: true },
-      include: { variants: true },
-      orderBy: { createdAt: "desc" },
-      take: 4,
-    }),
-    prisma.product.findMany({
-      where: { isActive: true, compareAtPrice: { not: null } },
-      include: { variants: true },
-    }),
-  ]);
+export default function Home() {
+  const featuredProducts = products.slice(0, 4);
 
   return (
     <main>

@@ -1,32 +1,33 @@
-import { RotateCcw, ShieldCheck, Truck } from "lucide-react";
-
-const signals = [
-  {
-    icon: Truck,
-    title: "Free shipping",
-    description: "Orders over $49",
-  },
-  {
-    icon: RotateCcw,
-    title: "Easy returns",
-    description: "30-day policy",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Secure payment",
-    description: "SSL encrypted",
-  },
-];
-
+import { Package, ShoppingBag, Sparkles } from "lucide-react";
+import { formatMoney, storeConfig } from "@/lib/store-config";
 export default function TrustSignals() {
+  const items = [
+    {
+      icon: ShoppingBag,
+      title: "Try the whole journey",
+      detail: "From first find to demo checkout",
+    },
+    {
+      icon: Package,
+      title: `Free demo shipping from ${formatMoney(storeConfig.shipping.freeFrom)}`,
+      detail: "See totals update with your cart",
+    },
+    {
+      icon: Sparkles,
+      title: "Make it your own",
+      detail: "A storefront template built to explore",
+    },
+  ];
   return (
-    <section className="mx-auto max-w-7xl border-y px-4 py-12 dark:border-neutral-800">
-      <div className="grid grid-cols-3 gap-4">
-        {signals.map((signal) => (
-          <div key={signal.title} className="text-center">
-            <signal.icon className="mx-auto h-6 w-6 text-neutral-600 dark:text-neutral-400" />
-            <p className="mt-2 text-sm font-medium">{signal.title}</p>
-            <p className="text-xs text-neutral-400 dark:text-neutral-500">{signal.description}</p>
+    <section className="border-y bg-muted/30">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 md:grid-cols-3">
+        {items.map(({ icon: Icon, title, detail }) => (
+          <div key={title} className="flex items-center gap-4">
+            <Icon className="shrink-0" size={28} />
+            <div>
+              <h2 className="text-sm font-semibold">{title}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
+            </div>
           </div>
         ))}
       </div>

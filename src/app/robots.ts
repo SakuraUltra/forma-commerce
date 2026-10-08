@@ -1,10 +1,12 @@
-export default function robots() {
+import type { MetadataRoute } from "next";
+import { storeConfig } from "@/lib/store-config";
+export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/admin/", "/checkout", "/api/"],
+      disallow: ["/checkout", "/orders", "/auth", "/api"],
     },
-    sitemap: "https://my-shop-seven-iota.vercel.app/sitemap.xml",
+    sitemap: new URL("/sitemap.xml", storeConfig.siteUrl).href,
   };
 }

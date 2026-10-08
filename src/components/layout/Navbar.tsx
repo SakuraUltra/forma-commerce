@@ -4,34 +4,25 @@ import CartSheet from "@/components/cart/CartSheet";
 import SearchDialog from "@/components/layout/SearchDialog";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-    Sheet,
-    SheetContent,
-    SheetTitle,
-    SheetTrigger,
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, Search, User } from "lucide-react";
+import { Menu, Search, Package } from "lucide-react";
 import Link from "next/link";
+import { storeConfig } from "@/lib/store-config";
 import { useEffect, useState } from "react";
 
 const navLinks = [
   { href: "/products", label: "Products" },
   { href: "/on-sale", label: "On Sale" },
+  { href: "/about", label: "About the demo" },
 ];
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("auth") === "true");
-  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -44,17 +35,15 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const handleSignOut = () => {
-    localStorage.removeItem("auth");
-    window.location.reload();
-  };
-
   return (
     <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/80">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         {/* Left: Logo */}
-        <Link href="/" className="text-xl font-bold tracking-tight dark:text-white">
-          MY SHOP
+        <Link
+          href="/"
+          className="text-xl font-bold tracking-tight dark:text-white"
+        >
+          {storeConfig.name}
         </Link>
 
         {/* Center: Desktop nav links */}
@@ -87,36 +76,21 @@ export default function Navbar() {
             </kbd>
           </button>
 
-          <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+          <SearchDialog
+            key={String(searchOpen)}
+            open={searchOpen}
+            onOpenChange={setSearchOpen}
+          />
 
           <CartSheet />
 
-          {isLoggedIn ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="cursor-pointer text-gray-700 transition-colors hover:text-gray-500 dark:text-neutral-300 dark:hover:text-white">
-                <User className="h-5 w-5" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" sideOffset={8}>
-                <DropdownMenuItem className="pointer-events-none font-medium">
-                  Demo User
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/orders" className="w-full">My orders</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleSignOut}>
-                  Sign out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Link
-              href="/auth/signin"
-              className="text-gray-700 transition-colors hover:text-gray-500 dark:text-neutral-300 dark:hover:text-white"
-              aria-label="Account"
-            >
-              <User className="h-5 w-5" />
-            </Link>
-          )}
+          <Link
+            href="/orders"
+            aria-label="Demo orders"
+            className="text-gray-700 dark:text-neutral-300"
+          >
+            <Package className="h-5 w-5" />
+          </Link>
 
           {/* Mobile: Hamburger menu */}
           <div className="md:hidden">

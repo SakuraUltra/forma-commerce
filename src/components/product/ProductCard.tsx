@@ -1,3 +1,4 @@
+import { formatMoney } from "@/lib/store-config";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -20,7 +21,8 @@ export default function ProductCard({
   colors,
   badge,
 }: ProductCardProps) {
-  const isSaleBadge = badge && (badge.includes("%") || badge.toLowerCase().includes("sale"));
+  const isSaleBadge =
+    badge && (badge.includes("%") || badge.toLowerCase().includes("sale"));
 
   return (
     <Link href={`/products/${slug}`} className="group block">
@@ -31,6 +33,7 @@ export default function ProductCard({
             src={image}
             alt={name}
             fill
+            sizes="(max-width: 768px) 50vw, 25vw"
             className="object-cover transition-transform duration-300 md:group-hover:scale-105"
           />
         ) : (
@@ -48,16 +51,18 @@ export default function ProductCard({
       </div>
 
       {/* Product info */}
-      <h3 className="mt-3 text-sm font-medium text-neutral-900 dark:text-neutral-100">{name}</h3>
+      <h3 className="mt-3 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+        {name}
+      </h3>
 
       {/* Price */}
       <div className="mt-1 flex flex-nowrap items-center gap-2">
         <span className="text-sm font-semibold text-neutral-900 dark:text-white">
-          ${(price / 100).toFixed(2)}
+          {formatMoney(price)}
         </span>
         {originalPrice && (
           <span className="text-sm text-neutral-400 line-through">
-            ${(originalPrice / 100).toFixed(2)}
+            {formatMoney(originalPrice)}
           </span>
         )}
       </div>

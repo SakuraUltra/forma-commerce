@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -31,7 +27,6 @@ export default function ImageGallery({
   useEffect(() => {
     if (!emblaApi) return;
     emblaApi.on("select", onSelect);
-    onSelect();
     return () => {
       emblaApi.off("select", onSelect);
     };
@@ -49,8 +44,7 @@ export default function ImageGallery({
   /* ── Lightbox nav ───────────────────────────────────── */
   const lightboxPrev = () =>
     setSelectedIndex((i) => (i - 1 + images.length) % images.length);
-  const lightboxNext = () =>
-    setSelectedIndex((i) => (i + 1) % images.length);
+  const lightboxNext = () => setSelectedIndex((i) => (i + 1) % images.length);
 
   if (images.length === 0) {
     return (
@@ -87,6 +81,7 @@ export default function ImageGallery({
             {images.map((_, idx) => (
               <button
                 key={idx}
+                aria-label={`Show image ${idx + 1}`}
                 onClick={() => scrollTo(idx)}
                 className={`h-2 w-2 rounded-full transition-colors ${
                   idx === selectedIndex
@@ -155,6 +150,7 @@ export default function ImageGallery({
             {/* Left arrow */}
             {images.length > 1 && (
               <button
+                aria-label="Previous image"
                 onClick={lightboxPrev}
                 className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/80 shadow hover:bg-white dark:bg-neutral-800/80 dark:hover:bg-neutral-800"
               >
@@ -165,6 +161,7 @@ export default function ImageGallery({
             {/* Right arrow */}
             {images.length > 1 && (
               <button
+                aria-label="Next image"
                 onClick={lightboxNext}
                 className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/80 shadow hover:bg-white dark:bg-neutral-800/80 dark:hover:bg-neutral-800"
               >
