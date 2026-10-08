@@ -10,7 +10,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write src README.md docs .github"
+    "format": "prettier --write src README.md docs"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

@@ -97,6 +97,6 @@ The repository's previous Vercel address is not advertised as a working demo unt
 
 ## Images and licensing
 
-Sample imagery is served from Unsplash; photographs are not included under the application's code license. The candle image is by [Jack Baxter on Unsplash](https://unsplash.com/photos/a-lit-candle-in-a-glass-jar-on-a-table-fCe0oFccURY). Replace imagery and branding before presenting the template as your own commercial store.
+Sample imagery is served from Unsplash; photographs are not included under the application's code license. Updated images: [candle by Jack Baxter](https://unsplash.com/photos/a-lit-candle-in-a-glass-jar-on-a-table-fCe0oFccURY), [tote by Rahul Bhogal](https://unsplash.com/photos/white-tote-bag-lihCTIOP28U), and [watch by Lucas Kepner](https://unsplash.com/photos/a-watch-sitting-on-top-of-a-black-table-KqmdTLEji08). Replace imagery and branding before presenting the template as your own commercial store.
 
 Application code is available under the [MIT License](LICENSE).

@@ -63,7 +63,7 @@ const seeds: ProductSeed[] = [
     price: 4999,
     compareAtPrice: 5900,
     image:
-      "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=800&q=80",
+      "https://images.unsplash.com/photo-1485527691629-8e370684924c?w=800&q=80",
     colors: ["Brown", "Black"],
     colorHexes: ["#c19a6b", "#36454f"],
     category: "Accessories",
@@ -107,7 +107,7 @@ const seeds: ProductSeed[] = [
     slug: "canvas-tote-bag",
     price: 3499,
     image:
-      "https://images.unsplash.com/photo-1597633425046-08f5110420b5?w=800&q=80",
+      "https://images.unsplash.com/photo-1548863227-3af567fc3b27?w=800&q=80",
     colors: ["Black", "White"],
     colorHexes: ["#000000", "#ffffff"],
     category: "Accessories",
@@ -129,7 +129,7 @@ const seeds: ProductSeed[] = [
     slug: "chronograph-watch",
     price: 19999,
     image:
-      "https://images.unsplash.com/photo-1639037687665-4f60498e0498?w=800&q=80",
+      "https://images.unsplash.com/photo-1672708858576-ce0b773c8f59?w=800&q=80",
     colors: ["Silver", "Gold"],
     colorHexes: ["#c0c0c0", "#FFD700"],
     category: "Watches",
