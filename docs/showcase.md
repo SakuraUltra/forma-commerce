@@ -1,8 +1,8 @@
 # FORMA storefront · Project case study
 
-[中文案例](#中文项目案例) · [Animated preview](media/storefront-preview.gif) · [Desktop](media/desktop-home.jpg) · [Mobile](media/mobile-home.jpg) · [Walkthrough](media/storefront-walkthrough.mp4) · [v0.1.0 release](https://github.com/SakuraUltra/my-shop/releases/tag/v0.1.0)
+[中文案例](#中文项目案例) · [Animated preview](media/storefront-preview.gif) · [Desktop](media/desktop-home.jpg) · [Mobile](media/mobile-home.jpg) · [Walkthrough](media/storefront-walkthrough.mp4) · [v0.1.0 release](https://github.com/SakuraUltra/forma-commerce/releases/tag/v0.1.0)
 
-**FORMA is a responsive ecommerce frontend and reusable Next.js template for a fictional everyday clothing and lifestyle brand.** The `my-shop` repository brings product discovery, variant selection, a persistent cart, guest demo checkout, saved orders and a delivery simulation into one coherent journey.
+**FORMA is a responsive ecommerce frontend and reusable Next.js template for a fictional everyday clothing and lifestyle brand.** The `forma-commerce` repository brings product discovery, variant selection, a persistent cart, guest demo checkout, saved orders and a delivery simulation into one coherent journey.
 
 ## Goal and audience
 
@@ -28,7 +28,7 @@ The release baseline includes **12 catalog product pages and 27 automated test c
 
 - [Commerce tests](../src/lib/commerce.test.ts) cover catalog consistency, combined filters, stock limits, invalid quantities, stale cart repair, reload persistence, shipping thresholds, order snapshots, malformed saved data and delivery progression.
 - [Checkout component tests](../src/components/checkout/CheckoutContent.test.tsx) exercise an empty cart, a completed guest checkout, order display after remount, failed storage with cart preservation and a missing-order state.
-- [GitHub Actions](../.github/workflows/storefront-checks.yml) runs locked dependency installation, lint, tests and a production build. The build also checks TypeScript. See [run history](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml) for evidence tied to a particular commit.
+- [GitHub Actions](../.github/workflows/storefront-checks.yml) runs locked dependency installation, lint, tests and a production build. The build also checks TypeScript. See [run history](https://github.com/SakuraUltra/forma-commerce/actions/workflows/storefront-checks.yml) for evidence tied to a particular commit.
 
 These checks do not establish production security, cross-browser coverage, performance improvements or measured usability. The suite combines domain and component tests; it is not an automated end-to-end browser suite.
 
@@ -54,7 +54,7 @@ The retained Prisma schema is a design reference only. Production commerce would
 
 ## 中文项目案例
 
-**FORMA 是一个自然简约风格的电商前端作品，也是 `my-shop` 仓库中的可复用 Next.js 模板。** 它将商品发现、规格选择、持久化购物车、游客模拟结算、订单查看和模拟配送串成完整体验。
+**FORMA 是一个自然简约风格的电商前端作品，也是 `forma-commerce` 仓库中的可复用 Next.js 模板。** 它将商品发现、规格选择、持久化购物车、游客模拟结算、订单查看和模拟配送串成完整体验。
 
 ### 目标与设计方向
 
@@ -70,7 +70,7 @@ The retained Prisma schema is a design reference only. Production commerce would
 
 ### 已验证的范围
 
-发布基线包含 **12 个商品详情页、27 个自动测试用例**。[业务规则测试](../src/lib/commerce.test.ts)覆盖筛选、库存与数量、购物车恢复、运费边界、订单快照及异常存储；[结算组件测试](../src/components/checkout/CheckoutContent.test.tsx)覆盖下单、重新挂载后显示订单、保存失败保留购物车及未知订单状态。[CI 记录](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml)可查看具体提交的代码检查、测试和生产构建结果。
+发布基线包含 **12 个商品详情页、27 个自动测试用例**。[业务规则测试](../src/lib/commerce.test.ts)覆盖筛选、库存与数量、购物车恢复、运费边界、订单快照及异常存储；[结算组件测试](../src/components/checkout/CheckoutContent.test.tsx)覆盖下单、重新挂载后显示订单、保存失败保留购物车及未知订单状态。[CI 记录](https://github.com/SakuraUltra/forma-commerce/actions/workflows/storefront-checks.yml)可查看具体提交的代码检查、测试和生产构建结果。
 
 这些证据说明实现与验证范围，不代表真实用户量、商业效果、性能提升、跨浏览器完整覆盖或生产安全认证。目前没有自动化端到端浏览器测试，也没有用户研究结果。
 
