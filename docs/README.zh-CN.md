@@ -1,22 +1,22 @@
-# FORMA · 可完整体验的电商作品集
+# FORMA — Next.js 电商模板与作品集
 
 **从浏览商品到保存模拟订单，一套可以完整体验的精品店购物流程。**
 
-FORMA 是 **my-shop** 中的示例品牌，也是一个可复用的 **Next.js、React 和 TypeScript** 开源模板。暖白、深橄榄色与编辑式排版构成自然简约的视觉；无需 API 密钥或数据库配置，就能体验“浏览 → 选规格 → 购物车 → 模拟下单 → 查看订单 → 模拟配送”。
+FORMA 是 **forma-commerce** 中的示例品牌，也是一个可复用的 **Next.js、React 和 TypeScript** 开源模板。暖白、深橄榄色与编辑式排版构成自然简约的视觉；无需 API 密钥或数据库配置，就能体验“浏览 → 选规格 → 购物车 → 模拟下单 → 查看订单 → 模拟配送”。
 
-[本地启动](#本地启动) · [项目案例](showcase.md) · [v0.1.0 Release](https://github.com/SakuraUltra/my-shop/releases/tag/v0.1.0) · [English](../README.md)
+[本地启动](#本地启动) · [项目案例](showcase.md) · [v0.1.0 Release](https://github.com/SakuraUltra/forma-commerce/releases/tag/v0.1.0) · [English](../README.md)
 
 > **这是演示项目：不收款、不发货、不发送邮件，也不需要注册。** 订单只保存在当前浏览器，请使用结算页提供的虚构地址。
 
 ## 效果预览
 
-[![FORMA 动态预览：首页、商品列表、商品详情与模拟订单](media/storefront-preview.gif)](https://github.com/SakuraUltra/my-shop/releases/tag/v0.1.0)
+[![FORMA 动态预览：首页、商品列表、商品详情与模拟订单](media/storefront-preview.gif)](https://github.com/SakuraUltra/forma-commerce/releases/tag/v0.1.0)
 
 [观看 MP4 演示](media/storefront-walkthrough.mp4) · [阅读设计与实现案例](showcase.md)
 
 动图和视频由实际运行界面的截图串联制作，并非实时录屏。启动本地项目后，可以亲自体验页面交互。
 
-[下载离线展示包](https://github.com/SakuraUltra/my-shop/releases/download/v0.1.0/forma-v0.1.0-showcase.zip)：解压 ZIP 后打开 `index.html`，即可浏览包含图片和视频的静态展示；购物交互需要[本地运行项目](#本地启动)。
+[下载离线展示包](https://github.com/SakuraUltra/forma-commerce/releases/download/v0.1.0/forma-v0.1.0-showcase.zip)：解压 ZIP 后打开 `index.html`，即可浏览包含图片和视频的静态展示；购物交互需要[本地运行项目](#本地启动)。
 
 <details>
 <summary>展开查看桌面、手机和订单截图</summary>
@@ -34,8 +34,8 @@ FORMA 是 **my-shop** 中的示例品牌，也是一个可复用的 **Next.js、
 使用 Node.js 22.22 或更新版本（推荐 Node 22 LTS）：
 
 ```bash
-git clone --branch v0.1.0 https://github.com/SakuraUltra/my-shop.git
-cd my-shop
+git clone --branch v0.1.0 https://github.com/SakuraUltra/forma-commerce.git
+cd forma-commerce
 npm ci
 npm run dev
 ```
@@ -81,7 +81,7 @@ npm run start
 
 下一阶段可以完善产品内容编辑和自动化浏览器测试；真实登录、支付和共享库存应作为有明确后端边界的新阶段。
 
-自动检查配置位于 [`.github/workflows/storefront-checks.yml`](../.github/workflows/storefront-checks.yml)，覆盖拉取请求和 `main` 分支更新，也支持手动运行。流程安装锁定依赖，然后执行代码检查、测试和生产构建；仓库令牌仅有读取权限。它不会自动部署网站，具体提交是否通过请以 [GitHub Actions 记录](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml)为准。
+自动检查配置位于 [`.github/workflows/storefront-checks.yml`](../.github/workflows/storefront-checks.yml)，覆盖拉取请求和 `main` 分支更新，也支持手动运行。流程安装锁定依赖，然后执行代码检查、测试和生产构建；仓库令牌仅有读取权限。它不会自动部署网站，具体提交是否通过请以 [GitHub Actions 记录](https://github.com/SakuraUltra/forma-commerce/actions/workflows/storefront-checks.yml)为准。
 
 ## 可选部署
 

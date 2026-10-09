@@ -7,7 +7,7 @@ export const storeConfig = {
   locale: "en-US",
   shipping: { freeFrom: 4900, standard: 499 },
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-  repositoryUrl: "https://github.com/SakuraUltra/my-shop",
+  repositoryUrl: "https://github.com/SakuraUltra/forma-commerce",
 };
 export function formatMoney(cents: number, currency = storeConfig.currency) {
   return new Intl.NumberFormat(storeConfig.locale, {

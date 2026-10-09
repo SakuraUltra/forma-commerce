@@ -1,25 +1,25 @@
-# FORMA · Next.js Storefront
+# FORMA — Next.js Ecommerce Template
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Storefront checks](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml/badge.svg?branch=main)](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml)
+[![Storefront checks](https://github.com/SakuraUltra/forma-commerce/actions/workflows/storefront-checks.yml/badge.svg?branch=main)](https://github.com/SakuraUltra/forma-commerce/actions/workflows/storefront-checks.yml)
 
 **A boutique ecommerce storefront, from first browse to saved demo order.**
 
-FORMA is the sample brand inside **my-shop**: a portfolio project and reusable **Next.js, React and TypeScript** template. Warm ivory, deep olive and an editorial layout frame a complete guest shopping journey—no API keys or database setup required.
+FORMA is the sample brand inside **forma-commerce**: a portfolio project and reusable **Next.js, React and TypeScript** template. Warm ivory, deep olive and an editorial layout frame a complete guest shopping journey—no API keys or database setup required.
 
-[Run locally](#quick-start) · [Project case study](docs/showcase.md) · [v0.1.0 release](https://github.com/SakuraUltra/my-shop/releases/tag/v0.1.0) · [中文说明](docs/README.zh-CN.md)
+[Run locally](#quick-start) · [Project case study](docs/showcase.md) · [v0.1.0 release](https://github.com/SakuraUltra/forma-commerce/releases/tag/v0.1.0) · [中文说明](docs/README.zh-CN.md)
 
 > This is a **demo storefront**. It does not accept payments, register accounts, send emails or ship products. Cart and order data live in the visitor's browser. Use the fictional address provided at checkout.
 
 ## Preview
 
-[![FORMA storefront preview: editorial home, collection, product details and saved demo order](docs/media/storefront-preview.gif)](https://github.com/SakuraUltra/my-shop/releases/tag/v0.1.0)
+[![FORMA storefront preview: editorial home, collection, product details and saved demo order](docs/media/storefront-preview.gif)](https://github.com/SakuraUltra/forma-commerce/releases/tag/v0.1.0)
 
 [Watch the MP4 walkthrough](docs/media/storefront-walkthrough.mp4) · [Explore the design and engineering decisions](docs/showcase.md)
 
 The GIF and video are montages of captured screens from the working interface, not real-time screen recordings. Run the project locally to try the interactions.
 
-[Download the offline showcase kit](https://github.com/SakuraUltra/my-shop/releases/download/v0.1.0/forma-v0.1.0-showcase.zip): extract the ZIP and open `index.html` for a static presentation with images and video. Interactive shopping requires [running the project locally](#quick-start).
+[Download the offline showcase kit](https://github.com/SakuraUltra/forma-commerce/releases/download/v0.1.0/forma-v0.1.0-showcase.zip): extract the ZIP and open `index.html` for a static presentation with images and video. Interactive shopping requires [running the project locally](#quick-start).
 
 <details>
 <summary>View desktop, mobile and order screenshots</summary>
@@ -37,8 +37,8 @@ The GIF and video are montages of captured screens from the working interface, n
 Use Node.js **22.22+** (Node 22 LTS recommended).
 
 ```bash
-git clone --branch v0.1.0 https://github.com/SakuraUltra/my-shop.git
-cd my-shop
+git clone --branch v0.1.0 https://github.com/SakuraUltra/forma-commerce.git
+cd forma-commerce
 npm ci
 npm run dev
 ```
@@ -90,7 +90,7 @@ npm run build
 npm run start
 ```
 
-`npm run test` starts watch mode. `npm run typecheck` performs a separate type check (the production build also checks types). The [Storefront checks workflow](.github/workflows/storefront-checks.yml) installs locked dependencies, lints, tests and builds on pull requests and pushes to `main`. It can also be run manually from GitHub Actions. It uses a read-only repository token and does not deploy the site. Check the [Actions page](https://github.com/SakuraUltra/my-shop/actions/workflows/storefront-checks.yml) for the status of a particular commit.
+`npm run test` starts watch mode. `npm run typecheck` performs a separate type check (the production build also checks types). The [Storefront checks workflow](.github/workflows/storefront-checks.yml) installs locked dependencies, lints, tests and builds on pull requests and pushes to `main`. It can also be run manually from GitHub Actions. It uses a read-only repository token and does not deploy the site. Check the [Actions page](https://github.com/SakuraUltra/forma-commerce/actions/workflows/storefront-checks.yml) for the status of a particular commit.
 
 Tests cover stock and quantity limits, duplicate and stale cart data, price recalculation, shipping boundaries, unique order IDs, persistence, malformed saved orders, failed storage, missing orders and the guest checkout UI.
 
